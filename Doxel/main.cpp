@@ -22,12 +22,14 @@ int main()
 
 	const int width = 1600;
 	const int height = 1000;
+
 	if (!glfwInit())
 	{
 		Debug_Log("Failed to initialize GLFW\n");
 	}
 	// create a window
-	Window m_window(width, height, "Doxel");
+	Window m_window;
+	m_window.init(width, height, "Doxel");
 
 	// Set up glew
 	glewExperimental = GL_TRUE;
@@ -35,16 +37,14 @@ int main()
 	{
 		Debug_Log("Failed to initialize GLEW\n");
 	}
+
 	// Set up the Input Manager
 	InputManager m_inputManager;
 	m_inputManager.init(m_window.getGlfwWindow());
 
-	glm::vec3 cPos;
-	cPos = glm::vec3(0,0 ,0);
-
+	glm::vec3 cPos = glm::vec3(0);
 	Camera3D m_camera;
-
-	m_camera.init(cPos, 45.0f, (float)width / height,1.0, 10000);
+	m_camera.init(cPos, 45.0f, m_window.getAspectRatio(),1.0, 10000);
 	
 	
 	glEnable(GL_DEPTH_TEST);
@@ -94,59 +94,59 @@ int main()
 			m_window.setWindowClose();
 		}
 		
-		if (m_inputManager.isKeyPressed(KEYS::W) || m_inputManager.isKeyDown(KEYS::W)) ///< FORWARD
+		if (m_inputManager.isKeyPressed(KEYS::W) || m_inputManager.isKeyHeldDown(KEYS::W)) ///< FORWARD
 		{
 			m_camera.applyMovement(cMove::Forward);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::S) || m_inputManager.isKeyDown(KEYS::S)) ///< BACKWARD
+		if (m_inputManager.isKeyPressed(KEYS::S) || m_inputManager.isKeyHeldDown(KEYS::S)) ///< BACKWARD
 		{
 			m_camera.applyMovement(cMove::Backward);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::A) || m_inputManager.isKeyDown(KEYS::A)) ///< LEFT
+		if (m_inputManager.isKeyPressed(KEYS::A) || m_inputManager.isKeyHeldDown(KEYS::A)) ///< LEFT
 		{
 			m_camera.applyMovement(cMove::Left);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::D) || m_inputManager.isKeyDown(KEYS::D)) ///< RIGHT
+		if (m_inputManager.isKeyPressed(KEYS::D) || m_inputManager.isKeyHeldDown(KEYS::D)) ///< RIGHT
 		{
 			m_camera.applyMovement(cMove::Right);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::Z) || m_inputManager.isKeyDown(KEYS::Z)) ///<UP
+		if (m_inputManager.isKeyPressed(KEYS::Z) || m_inputManager.isKeyHeldDown(KEYS::Z)) ///<UP
 		{
 			m_camera.applyMovement(cMove::Up);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::X) || m_inputManager.isKeyDown(KEYS::X))///< DOWN
+		if (m_inputManager.isKeyPressed(KEYS::X) || m_inputManager.isKeyHeldDown(KEYS::X))///< DOWN
 		{
 			m_camera.applyMovement(cMove::Down);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::Q) || m_inputManager.isKeyDown(KEYS::Q))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::Q) || m_inputManager.isKeyHeldDown(KEYS::Q))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Rotate_Left);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::E) || m_inputManager.isKeyDown(KEYS::E))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::E) || m_inputManager.isKeyHeldDown(KEYS::E))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Rotate_Right);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::F) || m_inputManager.isKeyDown(KEYS::F))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::F) || m_inputManager.isKeyHeldDown(KEYS::F))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Roll_Left);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::G) || m_inputManager.isKeyDown(KEYS::G))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::G) || m_inputManager.isKeyHeldDown(KEYS::G))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Roll_Right);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::C) || m_inputManager.isKeyDown(KEYS::C))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::C) || m_inputManager.isKeyHeldDown(KEYS::C))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Pitch_Up);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::V) || m_inputManager.isKeyDown(KEYS::V))///< rotate left
+		if (m_inputManager.isKeyPressed(KEYS::V) || m_inputManager.isKeyHeldDown(KEYS::V))///< rotate left
 		{
 			m_camera.applyMovement(cMove::Pitch_Down);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::UP) || m_inputManager.isKeyDown(KEYS::UP))
+		if (m_inputManager.isKeyPressed(KEYS::UP) || m_inputManager.isKeyHeldDown(KEYS::UP))
 		{
 			m_camera.increaseSpeed();
 		}
-		if (m_inputManager.isKeyPressed(KEYS::DOWN) || m_inputManager.isKeyDown(KEYS::DOWN))
+		if (m_inputManager.isKeyPressed(KEYS::DOWN) || m_inputManager.isKeyHeldDown(KEYS::DOWN))
 		{
 			m_camera.decreaseSpeed();
 		}
@@ -175,7 +175,7 @@ int main()
 
 
 		m_chunkManager.draw(&m_drawBatch);
-		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(10000.0, 10000.0, 0.1), Color8(120,215, 115, 255), true);
+		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(10000.0, 10000.0, 0.1), Color8(255,255,255,255),true);
 
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
@@ -197,7 +197,8 @@ int main()
 	
 	m_drawBatch.dispose();
 	//Close the window 
-	m_window.~Window();
-	
+	m_window.dispose();
+
+	glfwTerminate();
 	return 0;
 }

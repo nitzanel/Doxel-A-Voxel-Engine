@@ -1,16 +1,29 @@
 #include "Window.h"
 #include "EasyErrors.h"
 
-Window::Window(int width, int height, char* title) : 
-m_width(width),
-m_height(height),
-m_title(title)
+Window::Window()
 {
-	/*glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+	/*Empty*/
+}
+
+
+Window::~Window()
+{
+	dispose();
+}
+
+void Window::init(int width, int height, char* title /* = DEFAULT_TITLE */)
+{
+	m_width = width;
+	m_height = height;
+	m_title = title;
+
+	glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL */
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL 
+	
 	m_window = glfwCreateWindow(m_width, m_height, title, nullptr, nullptr);
 	if (m_window == nullptr)
 	{
@@ -18,16 +31,12 @@ m_title(title)
 		glfwTerminate();
 	}
 	glfwMakeContextCurrent(m_window);
-
-
 }
 
-
-Window::~Window()
+void Window::dispose()
 {
 	glfwDestroyWindow(m_window);
-	Debug_Log("Window Terminated")
-	glfwTerminate();
+	Debug_Log(m_title << "Window Terminated");
 }
 
 void Window::update()
