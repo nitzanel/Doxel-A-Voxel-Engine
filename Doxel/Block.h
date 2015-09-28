@@ -4,7 +4,7 @@
 #include <random>
 #include "Vertex.h"
 const int CHUNKSIZE = 8;
-const int NUM_CHUNKS = 1;
+const int NUM_CHUNKS = 1000;
 
 
 
@@ -19,7 +19,7 @@ public:
 	bool getActive() { return isActive; }
 
 private:
-	bool isActive;
+	bool isActive = false;
 
 	
 };
@@ -33,17 +33,21 @@ public:
 
 	bool isActive = false;
 	bool shouldUpdate = false;
-	Color8 m_color;
-	
-	void init();
+	bool isInit = false;
 
+	void init();
+	void dispose();
 	void draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos);
 
 	void update(); 
 	void setActive(bool state);
+	void setColor(Color8 color) { m_color = color; }
+
+	void randActive(int numBlocks);
 
 private:
 	Block*** m_blocks;
+	Color8 m_color;
 };
 
 class ChunkManager
@@ -53,7 +57,9 @@ public:
 	~ChunkManager();
 
 	void init();
-
+	void dispose() {
+		this->~ChunkManager();
+	}
 	void update(const glm::vec3 &cameraPos);
 
 	void draw(DrawBatch* drawBatch);

@@ -20,8 +20,8 @@ int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	const int width = 1600;
-	const int height = 1000;
+	const int width = 1920;
+	const int height = 1200;
 
 	if (!glfwInit())
 	{
@@ -150,7 +150,13 @@ int main()
 		{
 			m_camera.decreaseSpeed();
 		}
-
+		if (m_inputManager.isKeyPressed(KEYS::SPACE))
+		{
+			m_camera.setPosition(glm::vec3(0));
+			m_camera.setDirection(glm::vec3(1, 1, 0));
+			m_camera.setUpDir(glm::vec3(0, 0, 1));
+			m_camera.setSpeed(0.1f);
+		}
 
 		auto t_now = std::chrono::high_resolution_clock::now();
 		float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
@@ -183,7 +189,7 @@ int main()
 	
 
 	
-
+		
 		m_glProgram.unuse();
 
 		// update the window
@@ -192,7 +198,7 @@ int main()
 		m_fpsCounter.end();
 	}
 	//m_debugRenderer.dispose();
-
+	//m_chunkManager.dispose();
 	m_glProgram.deleteProgram();
 	
 	m_drawBatch.dispose();
