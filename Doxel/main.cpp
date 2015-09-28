@@ -20,8 +20,8 @@ int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	const int width = 1920;
-	const int height = 1200;
+	const int width = 1600;
+	const int height = 1000;
 
 	if (!glfwInit())
 	{
@@ -44,7 +44,7 @@ int main()
 
 	glm::vec3 cPos = glm::vec3(0);
 	Camera3D m_camera;
-	m_camera.init(cPos, 45.0f, m_window.getAspectRatio(),1.0, 10000);
+	m_camera.init(cPos, 45.0f,m_window.getAspectRatio(),1.0, 10000);
 	
 	
 	glEnable(GL_DEPTH_TEST);

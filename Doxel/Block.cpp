@@ -173,7 +173,7 @@ void Chunk::randActive(int numBlocks)
 					m_blocks[x][y][z].setActive(true);
 				}
 				numActive++;
-				if (numActive >= numBlocks)
+				if (numActive >= numBlocks / 3)
 				{
 					return;
 				}

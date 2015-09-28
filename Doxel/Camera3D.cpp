@@ -18,7 +18,7 @@ void Camera3D::init(glm::vec3 position, float fov, float aspectRatio, float near
 	m_near = near;
 	m_far = far;
 	SPEED_FACTOR = 0.1f;
-	m_projection = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_near, m_far);
+	m_projection = glm::perspective(glm::radians(m_fov), (float)1.5/m_aspectRatio, m_near, m_far);
 }
 
 void Camera3D::update()
@@ -79,7 +79,7 @@ bool Camera3D::inFrame(glm::vec3 position)
 	// and modified by Nitzan Elbaz to work with glm.
 	for (int p = 0; p < 6; p++)
 	{
-		if (frustum[p][0] * position.x + frustum[p][1] * position.y + frustum[p][2] * position.z + frustum[p][3] <= 0)
+		if (frustum[p][0] * position.x + frustum[p][1] * position.y + frustum[p][2] * position.z + frustum[p][3] <= -2)
 			return false;
 	}
 	return true;
