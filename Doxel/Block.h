@@ -4,10 +4,14 @@
 #include <random>
 #include "Vertex.h"
 const int CHUNKSIZE = 8;
-const int NUM_CHUNKS = 1000;
+const int NUM_CHUNKS = 100;
 
 
 
+enum GEN_METHOD
+{
+	RANDOM, SPHERE
+};
 
 class Block
 {
@@ -32,8 +36,15 @@ public:
 
 
 	bool isActive = false;
-	bool shouldUpdate = false;
+	bool shouldUpdate = true;
 	bool isInit = false;
+	void setGenMethod(GEN_METHOD method) 
+	{		
+			m_genMethod = method;
+			shouldUpdate = true;
+		
+	}
+
 
 	void init();
 	void dispose();
@@ -43,11 +54,14 @@ public:
 	void setActive(bool state);
 	void setColor(Color8 color) { m_color = color; }
 
-	void randActive(int numBlocks);
-
+	void genRand(int numBlocks);
+	void genSphere();
+	
 private:
 	Block*** m_blocks;
 	Color8 m_color;
+	GEN_METHOD m_genMethod = GEN_METHOD::RANDOM;
+	bool wasInit = false;
 };
 
 class ChunkManager
@@ -57,11 +71,10 @@ public:
 	~ChunkManager();
 
 	void init();
-	void dispose() {
-		this->~ChunkManager();
-	}
-	void update(const glm::vec3 &cameraPos);
+	void dispose() { this->~ChunkManager();	}
 
+	void update(const glm::vec3 &cameraPos);
+	void setGenMethod(GEN_METHOD method);
 	void draw(DrawBatch* drawBatch);
 
 

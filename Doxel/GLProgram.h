@@ -17,9 +17,9 @@ public:
 	void deleteProgram() {if(m_programID) glDeleteProgram(m_programID); }
 	GLuint getID() { return m_programID; }
 	
-	void uploadUnifromMatrix(char* name, int num, glm::mat4 &mat, GLboolean transpose);
+	void uploadUniformMatrix(char* name, int num, glm::mat4 &mat, GLboolean transpose);
 	GLint getUniformLocation(char* name) { return glGetUniformLocation(m_programID, name); }
-
+	void uploadUniformVector3(char* name, int num, glm::vec3 &uni);
 
 
 private:

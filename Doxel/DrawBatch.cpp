@@ -99,47 +99,11 @@ void DrawBatch::createRenderBatches()
 	int offset = 0;// use offset for texture new batches otherwise not needed
 	int cv = 0; /// current vertex
 	
-	m_renderBatches.emplace_back(offset, 36);
-	vertecies[cv++] = m_glyphs[0].vertecies[0];
-	vertecies[cv++] = m_glyphs[0].vertecies[1];
-	vertecies[cv++] = m_glyphs[0].vertecies[2];
-	vertecies[cv++] = m_glyphs[0].vertecies[1];
-	vertecies[cv++] = m_glyphs[0].vertecies[2];
-	vertecies[cv++] = m_glyphs[0].vertecies[3];
-	vertecies[cv++] = m_glyphs[0].vertecies[0];
-	vertecies[cv++] = m_glyphs[0].vertecies[1];
-	vertecies[cv++] = m_glyphs[0].vertecies[4];
-	vertecies[cv++] = m_glyphs[0].vertecies[1];
-	vertecies[cv++] = m_glyphs[0].vertecies[4];
-	vertecies[cv++] = m_glyphs[0].vertecies[5];
-	vertecies[cv++] = m_glyphs[0].vertecies[1];
-	vertecies[cv++] = m_glyphs[0].vertecies[3];
-	vertecies[cv++] = m_glyphs[0].vertecies[5];
-	vertecies[cv++] = m_glyphs[0].vertecies[3];
-	vertecies[cv++] = m_glyphs[0].vertecies[5];
-	vertecies[cv++] = m_glyphs[0].vertecies[7];
-	vertecies[cv++] = m_glyphs[0].vertecies[0];
-	vertecies[cv++] = m_glyphs[0].vertecies[2];
-	vertecies[cv++] = m_glyphs[0].vertecies[4];
-	vertecies[cv++] = m_glyphs[0].vertecies[2];
-	vertecies[cv++] = m_glyphs[0].vertecies[4];
-	vertecies[cv++] = m_glyphs[0].vertecies[6];
-	vertecies[cv++] = m_glyphs[0].vertecies[2];
-	vertecies[cv++] = m_glyphs[0].vertecies[3];
-	vertecies[cv++] = m_glyphs[0].vertecies[6];
-	vertecies[cv++] = m_glyphs[0].vertecies[3];
-	vertecies[cv++] = m_glyphs[0].vertecies[6];
-	vertecies[cv++] = m_glyphs[0].vertecies[7];
-	vertecies[cv++] = m_glyphs[0].vertecies[4];
-	vertecies[cv++] = m_glyphs[0].vertecies[5];
-	vertecies[cv++] = m_glyphs[0].vertecies[6];
-	vertecies[cv++] = m_glyphs[0].vertecies[5];
-	vertecies[cv++] = m_glyphs[0].vertecies[6];
-	vertecies[cv++] = m_glyphs[0].vertecies[7];
-	offset += 36;
-	for (unsigned int cg = 1; cg < m_glyphs.size(); cg++)
+	m_renderBatches.emplace_back(offset, 0);
+
+	for (unsigned int cg = 0; cg < m_glyphs.size(); cg++) // cg = current glyph
 	{
-		m_renderBatches.back().numVertecies += 36;
+		m_renderBatches.back().numVertecies += 36;	
 
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
@@ -147,36 +111,43 @@ void DrawBatch::createRenderBatches()
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
+		
+
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
+	
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 		vertecies[cv++] = m_glyphs[cg].vertecies[7];
+	
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];
+		vertecies[cv++] = m_glyphs[cg].vertecies[4];	
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];
+	
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];
+		vertecies[cv++] = m_glyphs[cg].vertecies[6];	
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];
 		vertecies[cv++] = m_glyphs[cg].vertecies[7];
+	
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];
+		vertecies[cv++] = m_glyphs[cg].vertecies[6];	
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];
 		vertecies[cv++] = m_glyphs[cg].vertecies[7];
+	
 		offset += 36;
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -204,10 +175,10 @@ void DrawBatch::createVertexArray()
 
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
-
+	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glBindVertexArray(0);
 }
 

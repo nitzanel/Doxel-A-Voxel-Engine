@@ -63,7 +63,7 @@ int main()
 	glm::vec3 mPos(0, 0, 0);
 
 	projection = m_camera.getProjectionMatrix();
-	m_glProgram.uploadUnifromMatrix("projection", 1, projection, GL_FALSE);
+	m_glProgram.uploadUniformMatrix("projection", 1, projection, GL_FALSE);
 	
 	FpsCounter m_fpsCounter;
 
@@ -157,6 +157,14 @@ int main()
 			m_camera.setUpDir(glm::vec3(0, 0, 1));
 			m_camera.setSpeed(0.1f);
 		}
+		if (m_inputManager.isKeyPressed(KEYS::T))
+		{
+			m_chunkManager.setGenMethod(GEN_METHOD::SPHERE);
+		}
+		if (m_inputManager.isKeyPressed(KEYS::R))
+		{
+			m_chunkManager.setGenMethod(GEN_METHOD::RANDOM);
+		}
 
 		auto t_now = std::chrono::high_resolution_clock::now();
 		float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
@@ -164,7 +172,7 @@ int main()
 
 
 		// Use the glProgram
-		m_glProgram.use();
+//		m_glProgram.use();
 		// UPLOAD THE CAMERA MATRIX AFTER YOU CALLED THE PROGRAM.
 //		m_glProgram.uploadUnifromMatrix("view", 1, view, GL_FALSE);
 //		m_glProgram.uploadUnifromMatrix("model", 1, model, GL_FALSE);
@@ -172,7 +180,12 @@ int main()
 		glm::mat4 view = m_camera.getViewMatrix();
 		glm::mat4 mvp = projection * view * model;
 
-		m_glProgram.uploadUnifromMatrix("mvp", 1, mvp, GL_FALSE);
+		//glm::vec3 lightPos = glm::vec3();
+
+		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
+		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
+		m_glProgram.uploadUniformMatrix("v", 1, view, GL_FALSE);
+		m_glProgram.uploadUniformVector3("lightPosition_worldSpace", 1, lightPos);
 
 		m_chunkManager.update(m_camera.getPosition());
 
@@ -190,7 +203,7 @@ int main()
 
 	
 		
-		m_glProgram.unuse();
+	//	m_glProgram.unuse();
 
 		// update the window
 		m_window.update();

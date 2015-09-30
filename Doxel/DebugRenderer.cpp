@@ -204,8 +204,8 @@ void DebugRenderer::drawSphere(const glm::vec3& center, const Color8 color, floa
 void DebugRenderer::render( glm::mat4& projectionMatrix,  glm::mat4& viewMatrix, float lineWidth)
 {
 	m_program.use();
-	m_program.uploadUnifromMatrix("P", 1, projectionMatrix, GL_FALSE);
-	m_program.uploadUnifromMatrix("V", 1, viewMatrix, GL_FALSE);
+	m_program.uploadUniformMatrix("P", 1, projectionMatrix, GL_FALSE);
+	m_program.uploadUniformMatrix("V", 1, viewMatrix, GL_FALSE);
 
 	glLineWidth(lineWidth);
 	glBindVertexArray(m_vao);

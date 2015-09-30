@@ -66,11 +66,13 @@ void Chunk::init()
 				m_blocks[i][j] = new Block[CHUNKSIZE];
 			}
 		}
-		int R = distribution(randEngine);
-		int G = distribution(randEngine);
-		int B = distribution(randEngine);
-		m_color = Color8(R, G, B, 255);
-		randActive(randBand(randEngine));
+		if (!wasInit){
+			int R = distribution(randEngine);
+			int G = distribution(randEngine);
+			int B = distribution(randEngine);
+			m_color = Color8(R, G, B, 255);
+			wasInit = true;
+		}
 		isInit = true;
 	}
 }
@@ -96,36 +98,27 @@ void Chunk::dispose()
 }
 void Chunk::update()
 {
-
-/*	if (shouldUpdate)
+	if (shouldUpdate)
 	{
-		for (int i = 0; i < CHUNKSIZE; i++)
+		switch (m_genMethod)
 		{
-			for (int j = 0; j < CHUNKSIZE; j++)
-			{
-				for (int k = 0; k < CHUNKSIZE; k++)
-				{
-					if (isActive)
-					{
-						m_blocks[i][j]->setActive(isActive);
-					}
-					else
-					{
-						m_blocks[i][j]->setActive(isActive);
-					}
-				}
-
-			}
+		case RANDOM:
+			genRand(randBand(randEngine));
+			break;
+		case SPHERE:
+			genSphere();
+			break;
+		default:
+			Debug_Log(" ERROR? : genMethod = NONE");
+			break;
 		}
-		shouldUpdate = false;
-	}*/
-
+	}
+	shouldUpdate = false;
 }
 
 void Chunk::setActive(bool state)
 {
 	 isActive = state;
-	 shouldUpdate = true; 
 }
 
 void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
@@ -149,7 +142,7 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 		}
 	}
 }
-void Chunk::randActive(int numBlocks)
+void Chunk::genRand(int numBlocks)
 {
 	int numActive = 0;
 
@@ -158,16 +151,30 @@ void Chunk::randActive(int numBlocks)
 		Debug_Log("Bad input for randActive");
 	}
 	else
-	{
+	{/*
+		for (int z = 0; z < CHUNKSIZE; z++)
+		{
+		for (int y = 0; y < CHUNKSIZE; y++)
+		{
+		for (int x = 0; x < CHUNKSIZE; x++)
+		{
+		if (sqrt((float)(x - CHUNKSIZE / 2)*(x - CHUNKSIZE / 2) + (y - CHUNKSIZE / 2)*(y - CHUNKSIZE / 2) + (z - CHUNKSIZE /2)*(z - CHUNKSIZE / 2)) < CHUNKSIZE / 2)
+		{
+		m_blocks[x][y][z].setActive(true);
+		}
+		}
+		}
+		}*/
 		for (int i = 0; i < CHUNKSIZE * CHUNKSIZE * CHUNKSIZE; i++)
 		{
-			//if (roll(randEngine) > k +5 && roll(randEngine) > j +1 && roll(randEngine) > i + 3)
+			int x, y, z;
+			x = roll(randEngine);
+			y = roll(randEngine);
+			z = roll(randEngine);
+
 			if (randBool(randEngine))
 			{
-				int x, y, z;
-				x = roll(randEngine);
-				y = roll(randEngine);
-				z = roll(randEngine);
+			
 				if (!m_blocks[x][y][z].getActive())
 				{
 					m_blocks[x][y][z].setActive(true);
@@ -176,6 +183,31 @@ void Chunk::randActive(int numBlocks)
 				if (numActive >= numBlocks / 3)
 				{
 					return;
+				}
+			}
+			else
+			{
+				m_blocks[x][y][z].setActive(false);
+			}
+		}
+	}
+}
+
+void Chunk::genSphere()
+{
+	for (int z = 0; z < CHUNKSIZE; z++)
+	{
+		for (int y = 0; y < CHUNKSIZE; y++)
+		{
+			for (int x = 0; x < CHUNKSIZE; x++)
+			{
+				if (sqrt((float)(x - CHUNKSIZE / 2)*(x - CHUNKSIZE / 2) + (y - CHUNKSIZE / 2)*(y - CHUNKSIZE / 2) + (z - CHUNKSIZE / 2)*(z - CHUNKSIZE / 2)) < CHUNKSIZE / 2)
+				{
+					m_blocks[x][y][z].setActive(true);
+				}
+				else
+				{
+					m_blocks[x][y][z].setActive(false);
 				}
 			}
 		}
@@ -246,6 +278,16 @@ void ChunkManager::update(const glm::vec3 &cameraPos)
 
 	//	lastCameraPos = cameraPos;
 	//}
+}
+void ChunkManager::setGenMethod(GEN_METHOD method)
+{
+	for (int i = 0; i < NUM_CHUNKS; i++)
+	{
+		for (int j = 0; j < NUM_CHUNKS; j++)
+		{
+			m_chunks[i][j].setGenMethod(method);
+		}
+	}
 }
 
 void ChunkManager::draw(DrawBatch* drawBatch)
