@@ -78,20 +78,23 @@ void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 &
 void DrawBatch::renderBatch()
 {
 	glBindVertexArray(m_vao);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	for (unsigned int i = 0; i < m_renderBatches.size(); i++)
 	{
-		// bind texture if there is
-
-		glDrawArrays(GL_TRIANGLES, m_renderBatches[i].offset, m_renderBatches[i].numVertecies);
+		// bind texture if there is -> there will never be but whatever
+	//	glDrawArrays(GL_TRIANGLES, m_renderBatches[i].offset, m_renderBatches[i].numVertecies);
+		glDrawElements(GL_TRIANGLES, m_numElements, GL_UNSIGNED_INT, (void*)0);
 	}
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
 }
 
 void DrawBatch::createRenderBatches()
 {
 	std::vector <Vertex> vertecies;
-	vertecies.resize(m_glyphs.size() * 36);
-
+	vertecies.resize(m_glyphs.size() * 8);
+	m_indecies.resize(m_glyphs.size() * 36);
+	unsigned int ci = 0; /// current indecie
 	if (m_glyphs.empty())
 	{
 		return;
@@ -105,21 +108,73 @@ void DrawBatch::createRenderBatches()
 	{
 		m_renderBatches.back().numVertecies += 36;	
 
+		
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		
+		vertecies[cv++] = m_glyphs[cg].vertecies[4];
+		vertecies[cv++] = m_glyphs[cg].vertecies[5];
+		vertecies[cv++] = m_glyphs[cg].vertecies[6];
+		vertecies[cv++] = m_glyphs[cg].vertecies[7];
 
-		vertecies[cv++] = m_glyphs[cg].vertecies[0];
+		/*vertecies[cv++] = m_glyphs[cg].vertecies[0];
+		vertecies[cv++] = m_glyphs[cg].vertecies[1];
+		vertecies[cv++] = m_glyphs[cg].vertecies[2];
+		vertecies[cv++] = m_glyphs[cg].vertecies[1];
+		vertecies[cv++] = m_glyphs[cg].vertecies[2];
+		vertecies[cv++] = m_glyphs[cg].vertecies[3];*/
+		
+		m_indecies[ci+0] = cg * 8 + 0;
+		m_indecies[ci+1] = cg * 8+ 1;
+		m_indecies[ci+2] = cg * 8+ 2;
+		m_indecies[ci + 3] = cg * 8 + 1;
+		m_indecies[ci + 4] = cg * 8 + 2;
+		m_indecies[ci + 5] = cg * 8 + 3;
+
+		m_indecies[ci + 6] = cg * 8 + 0;
+		m_indecies[ci + 7] = cg * 8 + 1;
+		m_indecies[ci + 8] = cg * 8 + 4;
+		m_indecies[ci + 9] = cg * 8 + 1;
+		m_indecies[ci + 10] = cg * 8 + 4;
+		m_indecies[ci + 11] = cg * 8 + 5;
+
+		m_indecies[ci + 12] = cg * 8 + 1;
+		m_indecies[ci + 13] = cg * 8 + 3;
+		m_indecies[ci + 14] = cg * 8 + 5;
+		m_indecies[ci + 15] = cg * 8 + 3;
+		m_indecies[ci + 16] = cg * 8 + 5;
+		m_indecies[ci + 17] = cg * 8 + 7;
+
+		m_indecies[ci + 18] = cg * 8 + 0;
+		m_indecies[ci + 19] = cg * 8 + 2;
+		m_indecies[ci + 20] = cg * 8 + 4;
+		m_indecies[ci + 21] = cg * 8 + 2;
+		m_indecies[ci + 22] = cg * 8 + 4;
+		m_indecies[ci + 23] = cg * 8 + 6;
+
+		m_indecies[ci + 24] = cg * 8 + 2;
+		m_indecies[ci + 25] = cg * 8 + 3;
+		m_indecies[ci + 26] = cg * 8 + 6;
+		m_indecies[ci + 27] = cg * 8 + 3;
+		m_indecies[ci + 28] = cg * 8 + 6;
+		m_indecies[ci + 29] = cg * 8 + 7;
+
+		m_indecies[ci + 30] = cg * 8 + 4;
+		m_indecies[ci + 31] = cg * 8 + 5;
+		m_indecies[ci + 32] = cg * 8 + 6;
+		m_indecies[ci + 33] = cg * 8 + 5;
+		m_indecies[ci + 34] = cg * 8 + 6;
+		m_indecies[ci + 35] = cg * 8 + 7;
+
+	/*	vertecies[cv++] = m_glyphs[cg].vertecies[0];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[4];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 	
+
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
@@ -146,10 +201,10 @@ void DrawBatch::createRenderBatches()
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];	
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];
-		vertecies[cv++] = m_glyphs[cg].vertecies[7];
-	
+		vertecies[cv++] = m_glyphs[cg].vertecies[7];*/
+		ci +=36;
 		offset += 36;
-	}
+	}	
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	// orphan the buffer
 	glBufferData(GL_ARRAY_BUFFER, vertecies.size() * sizeof(Vertex), nullptr, GL_DYNAMIC_DRAW);
@@ -157,6 +212,14 @@ void DrawBatch::createRenderBatches()
 	glBufferSubData(GL_ARRAY_BUFFER, 0, vertecies.size() * sizeof(Vertex), vertecies.data());
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indecies.size() * sizeof(GLuint), nullptr, GL_DYNAMIC_DRAW);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, m_indecies.size() * sizeof(GLuint), m_indecies.data());
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	
+	m_numElements = m_indecies.size();
+	m_indecies.clear(); 
+
 }
 
 void DrawBatch::createVertexArray()
@@ -171,8 +234,12 @@ void DrawBatch::createVertexArray()
 	{
 		glGenBuffers(1, &m_vbo);
 	}
+	if (m_ibo == 0)
+	{
+		glGenBuffers(1, &m_ibo);
+	}
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
@@ -191,6 +258,10 @@ void DrawBatch::dispose()
 	if (m_vbo)
 	{
 		glDeleteBuffers(1, &m_vbo);
+	}
+	if (m_ibo)
+	{
+		glDeleteBuffers(1, &m_ibo);
 	}
 
 }

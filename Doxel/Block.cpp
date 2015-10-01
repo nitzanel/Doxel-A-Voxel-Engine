@@ -108,6 +108,9 @@ void Chunk::update()
 		case SPHERE:
 			genSphere();
 			break;
+		case ALL:
+			genAll();
+			break;
 		default:
 			Debug_Log(" ERROR? : genMethod = NONE");
 			break;
@@ -210,6 +213,20 @@ void Chunk::genSphere()
 					m_blocks[x][y][z].setActive(false);
 				}
 			}
+		}
+	}
+}
+void Chunk::genAll()
+{
+	for (int z = 0; z < CHUNKSIZE; z++)
+	{
+		for (int y = 0; y < CHUNKSIZE; y++)
+		{
+			for (int x = 0; x < CHUNKSIZE; x++)
+			{
+				m_blocks[x][y][z].setActive(true);
+			}
+
 		}
 	}
 }

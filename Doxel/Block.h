@@ -4,13 +4,13 @@
 #include <random>
 #include "Vertex.h"
 const int CHUNKSIZE = 8;
-const int NUM_CHUNKS = 100;
+const int NUM_CHUNKS = 10;
 
 
 
 enum GEN_METHOD
 {
-	RANDOM, SPHERE
+	RANDOM, SPHERE, ALL
 };
 
 class Block
@@ -18,8 +18,15 @@ class Block
 public:
 	Block();
 	~Block();
-
+	/*
+	This function will active or deactive the block.
+	Input:
+		- bool state - the wanted state of the block, true for active, false for deactive.
+	*/
 	void setActive(bool state) { isActive = state; }
+	/*
+	This function will return the state of the block.
+	*/
 	bool getActive() { return isActive; }
 
 private:
@@ -27,13 +34,12 @@ private:
 
 	
 };
-
+///< Chunk class needs to be rewritten in more organaized way.
 class Chunk
 {
 public:
 	Chunk();
 	~Chunk();
-
 
 	bool isActive = false;
 	bool shouldUpdate = true;
@@ -56,6 +62,7 @@ public:
 
 	void genRand(int numBlocks);
 	void genSphere();
+	void genAll();
 	
 private:
 	Block*** m_blocks;
@@ -67,12 +74,27 @@ private:
 class ChunkManager
 {
 public:
+	/*
+	Create a ChunkManager.
+	*/
 	ChunkManager();
+	/*
+	Destroy a Chunkmanager.
+	*/
 	~ChunkManager();
-
+	/*
+	Initialize the ChunkManager.
+	*/
 	void init();
+	/*
+	Dispose the ChunkManager. /// make program crush, check destructor.
+	*/
 	void dispose() { this->~ChunkManager();	}
-
+	/*
+	This function updates the ChunkManager.
+	Input:
+		- const glm::vec3 &cameraPos - the camera position.
+	*/
 	void update(const glm::vec3 &cameraPos);
 	void setGenMethod(GEN_METHOD method);
 	void draw(DrawBatch* drawBatch);

@@ -20,8 +20,8 @@ int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	const int width = 1600;
-	const int height = 1000;
+	const int width = 900;
+	const int height = 900;
 
 	if (!glfwInit())
 	{
@@ -66,13 +66,11 @@ int main()
 	m_glProgram.uploadUniformMatrix("projection", 1, projection, GL_FALSE);
 	
 	FpsCounter m_fpsCounter;
-
+	glm::vec3 lightPos(0, 100, 100);
 
 	//ChunkStuff
 	ChunkManager m_chunkManager;
 	m_chunkManager.init();
-
-
 
 	m_fpsCounter.start();
 
@@ -165,6 +163,10 @@ int main()
 		{
 			m_chunkManager.setGenMethod(GEN_METHOD::RANDOM);
 		}
+		if (m_inputManager.isKeyPressed(KEYS::Y))
+		{
+			m_chunkManager.setGenMethod(GEN_METHOD::ALL);
+		}
 
 		auto t_now = std::chrono::high_resolution_clock::now();
 		float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
@@ -180,8 +182,8 @@ int main()
 		glm::mat4 view = m_camera.getViewMatrix();
 		glm::mat4 mvp = projection * view * model;
 
-		//glm::vec3 lightPos = glm::vec3();
-
+	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* 100,0,sinf(time / 2)* 100);
+	//	glm::vec3 lightPos = m_camera.getPosition() + glm::vec3(0, 0, 50);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("v", 1, view, GL_FALSE);
@@ -194,8 +196,8 @@ int main()
 
 
 		m_chunkManager.draw(&m_drawBatch);
-		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(10000.0, 10000.0, 0.1), Color8(255,255,255,255),true);
-
+	//	m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(10000.0, 10000.0, 0.1), Color8(255,255,255,255),true);
+	//	m_drawBatch.draw(lightPos, glm::vec3(10, 10, 10), Color8(255, 255, 255, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
 		
@@ -216,6 +218,7 @@ int main()
 	
 	m_drawBatch.dispose();
 	//Close the window 
+	m_chunkManager.dispose();
 	m_window.dispose();
 
 	glfwTerminate();

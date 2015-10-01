@@ -3,11 +3,13 @@
 float Rotation_Factor = 1.0f;
 Camera3D::Camera3D()
 {
+	/*EMPTY*/
 }
 
 
 Camera3D::~Camera3D()
 {
+	/*EMPTY*/
 }
 
 void Camera3D::init(glm::vec3 position, float fov, float aspectRatio, float near, float far)
