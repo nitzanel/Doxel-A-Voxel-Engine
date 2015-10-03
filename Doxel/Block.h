@@ -8,6 +8,7 @@
 #define NUM_CHUNKS 10
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
+#define RENDER_DISTANCE 300.0f
 
 enum GEN_METHOD
 {
@@ -35,34 +36,85 @@ private:
 
 	
 };
-///< Chunk class needs to be rewritten in more organaized way.
+///< Chunk class needs to be rewritten in more organaized way, there are too many public veriables
 class Chunk
 {
 public:
+	/*
+	Create a chunk object.
+	An empty constructor.
+	*/
 	Chunk();
+	/*
+	Destroy a chunk object, and delete the blocks data.
+	*/
 	~Chunk();
 
 	bool isActive = false;
 	bool shouldUpdate = true;
 	bool isInit = false;
+	/*
+	Set the chunk generation method
+	Input:
+		- GEN_METHOD method-	*ALL for all cubes to be renderd.
+								*RANDOM for some of the cubes to be renderd.
+								*SOHERE for a sphere like figure of the chunk to be renderd.
+	
+	*/
 	void setGenMethod(GEN_METHOD method) 
 	{		
 			m_genMethod = method;
-			shouldUpdate = true;
-		
+			shouldUpdate = true;		
 	}
 
-
+	/*
+	Init the chunk.
+	TODO: after chunks get disposed for being out of render range, make sure to redraw them when they are back again in the render range.
+	*/
 	void init();
+	/*
+	Dipose the chunk.
+	TODO: after chunks get disposed for being out of render range, make sure to redraw them when they are back again in the render range.(mostly work in Chunk::init())
+	*/
 	void dispose();
+	/*
+	Draw the chunk.
+	Input:
+		-DrawBatch* drawBatch - a pointer to the DrawBatch object being used to draw the scene.
+		- glm::vec2 &ChunkPos- a reference to a glm::vec2 that contains the position of the chunk on the 2D grid of the chunks.
+	*/
 	void draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos);
-
+	/*
+	Update the chunks.
+	Will set only happen if shouldUpdate = true.
+	will generate the blocks according to the m_genMethod.
+	*/
 	void update(); 
+	/*
+	Sets the chunk's state.
+	Input:
+		-bool state - true for active, false for not active.
+	*/
 	void setActive(bool state);
+	/*
+	Sets the chunk's color.
+	Input:	
+		-Color8 color - the color you want the chunk to have.
+	*/
 	void setColor(Color8 color) { m_color = color; }
-
+	/*
+	Generate the chunk randomly.
+	Input: 
+		-int numBlocks - the number of active blocks the chunk will have.
+	*/
 	void genRand(int numBlocks);
+	/*
+	Generate the chunk in a sphere-like figure.
+	*/
 	void genSphere();
+	/*
+	Generate all the blocks in the chunk.
+	*/
 	void genAll();
 	
 private:
@@ -113,8 +165,8 @@ public:
 	void draw(DrawBatch* drawBatch);
 
 
-	glm::vec3 lastCameraPos;
 private:
+	glm::vec3 lastCameraPos;
 	Chunk** m_chunks;
 	int m_chunksDraw = 0;
 };

@@ -25,6 +25,11 @@ void Camera3D::init(glm::vec3 position, float fov, float aspectRatio, float near
 
 void Camera3D::update()
 {
+	// make sure the camera doesn't have 0 SPEED_FACTOR
+	if (SPEED_FACTOR < 0.1)
+	{
+		SPEED_FACTOR += 0.1;
+	}
 	m_view = glm::lookAt(m_position, m_position + m_direction, m_upVec);
 }
 

@@ -63,7 +63,6 @@ int main()
 	glm::vec3 mPos(0, 0, 0);
 
 	projection = m_camera.getProjectionMatrix();
-	m_glProgram.uploadUniformMatrix("projection", 1, projection, GL_FALSE);
 	
 	FpsCounter m_fpsCounter;
 	glm::vec3 lightPos(0, 100, 100);
@@ -182,6 +181,7 @@ int main()
 		glm::mat4 mvp = projection * view * model;
 
 		glm::vec3 lightPos = glm::vec3(cosf(time / 2)* 100,0,sinf(time / 2)* 100);
+		//m_camera.setPosition(lightPos);
 	//	glm::vec3 lightPos = m_camera.getPosition() + glm::vec3(0, 0, 50);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
@@ -204,7 +204,6 @@ int main()
 
 	
 		
-	//	m_glProgram.unuse();
 
 		// update the window
 		m_window.update();

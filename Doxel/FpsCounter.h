@@ -1,12 +1,25 @@
 #pragma once
-
+/*
+An fps counter class.
+*/
 class FpsCounter
 {
 public:
+	/*
+	Create a FpsCounter object.
+	*/
 	FpsCounter();
+	/*
+	Destroy a FpsCounter object.
+	*/
 	~FpsCounter();
-
+	/*
+	Start counting the fps.
+	*/
 	void start();
+	/*
+	calculate the fps and print it.
+	*/
 	void end();
 	
 

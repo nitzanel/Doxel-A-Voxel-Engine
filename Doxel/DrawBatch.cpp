@@ -1,9 +1,8 @@
 #include "DrawBatch.h"
 
-
-DrawBatch::DrawBatch() : m_vbo(0), m_vao(0)
+DrawBatch::DrawBatch() : m_vbo(0), m_vao(0), m_ibo(0)
 {
-
+	/*EMPTY*/
 }
 
 
@@ -31,7 +30,7 @@ void DrawBatch::end()
 {
 	createRenderBatches();
 }
-void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color[8], bool overrideFrustum/* = false*/)
+void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color[NUMBER_OF_VERTS_IN_GLYPH], bool overrideFrustum/* = false*/)
 {
 	if (overrideFrustum)
 	{
@@ -78,7 +77,7 @@ void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 &
 void DrawBatch::renderBatch()
 {
 	glBindVertexArray(m_vao);
-//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
+//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo); < uneeded because the vertex array object remembers that the m_ibo need to be bound. yap, that wierd as fuck.
 	for (unsigned int i = 0; i < m_renderBatches.size(); i++)
 	{
 		// bind texture if there is -> there will never be but whatever
@@ -92,8 +91,8 @@ void DrawBatch::renderBatch()
 void DrawBatch::createRenderBatches()
 {
 	std::vector <Vertex> vertecies;
-	vertecies.resize(m_glyphs.size() * 8);
-	m_indecies.resize(m_glyphs.size() * 36);
+	vertecies.resize(m_glyphs.size() * NUMBER_OF_VERTS_IN_GLYPH);
+	m_indecies.resize(m_glyphs.size() * NUMBER_OF_INDECIES_IN_A_CUBE);
 	unsigned int ci = 0; /// current indecie
 	if (m_glyphs.empty())
 	{
@@ -106,7 +105,7 @@ void DrawBatch::createRenderBatches()
 
 	for (unsigned int cg = 0; cg < m_glyphs.size(); cg++) // cg = current glyph
 	{
-		m_renderBatches.back().numVertecies += 36;	
+		m_renderBatches.back().numVertecies += NUMBER_OF_INDECIES_IN_A_CUBE;
 
 		
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
@@ -125,83 +124,48 @@ void DrawBatch::createRenderBatches()
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
 		vertecies[cv++] = m_glyphs[cg].vertecies[3];*/
 		
-		m_indecies[ci+0] = cg * 8 + 0;
-		m_indecies[ci+1] = cg * 8+ 1;
-		m_indecies[ci+2] = cg * 8+ 2;
-		m_indecies[ci + 3] = cg * 8 + 1;
-		m_indecies[ci + 4] = cg * 8 + 2;
-		m_indecies[ci + 5] = cg * 8 + 3;
+		m_indecies[ci + 0] = cg * NUMBER_OF_VERTS_IN_GLYPH + 0;
+		m_indecies[ci + 1] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
+		m_indecies[ci + 2] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
+		m_indecies[ci + 3] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
+		m_indecies[ci + 4] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
+		m_indecies[ci + 5] = cg * NUMBER_OF_VERTS_IN_GLYPH + 3;
 
-		m_indecies[ci + 6] = cg * 8 + 0;
-		m_indecies[ci + 7] = cg * 8 + 1;
-		m_indecies[ci + 8] = cg * 8 + 4;
-		m_indecies[ci + 9] = cg * 8 + 1;
-		m_indecies[ci + 10] = cg * 8 + 4;
-		m_indecies[ci + 11] = cg * 8 + 5;
+		m_indecies[ci + 6] = cg * NUMBER_OF_VERTS_IN_GLYPH + 0;
+		m_indecies[ci + 7] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
+		m_indecies[ci + 8] = cg * NUMBER_OF_VERTS_IN_GLYPH + 4;
+		m_indecies[ci + 9] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
+		m_indecies[ci + 10] = cg * NUMBER_OF_VERTS_IN_GLYPH + 4;
+		m_indecies[ci + 11] = cg * NUMBER_OF_VERTS_IN_GLYPH + 5;
 
-		m_indecies[ci + 12] = cg * 8 + 1;
-		m_indecies[ci + 13] = cg * 8 + 3;
-		m_indecies[ci + 14] = cg * 8 + 5;
-		m_indecies[ci + 15] = cg * 8 + 3;
-		m_indecies[ci + 16] = cg * 8 + 5;
-		m_indecies[ci + 17] = cg * 8 + 7;
+		m_indecies[ci + 12] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
+		m_indecies[ci + 13] = cg * NUMBER_OF_VERTS_IN_GLYPH + 3;
+		m_indecies[ci + 14] = cg * NUMBER_OF_VERTS_IN_GLYPH + 5;
+		m_indecies[ci + 15] = cg * NUMBER_OF_VERTS_IN_GLYPH + 3;
+		m_indecies[ci + 16] = cg * NUMBER_OF_VERTS_IN_GLYPH + 5;
+		m_indecies[ci + 17] = cg * NUMBER_OF_VERTS_IN_GLYPH + 7;
 
-		m_indecies[ci + 18] = cg * 8 + 0;
-		m_indecies[ci + 19] = cg * 8 + 2;
-		m_indecies[ci + 20] = cg * 8 + 4;
-		m_indecies[ci + 21] = cg * 8 + 2;
-		m_indecies[ci + 22] = cg * 8 + 4;
-		m_indecies[ci + 23] = cg * 8 + 6;
+		m_indecies[ci + 18] = cg * NUMBER_OF_VERTS_IN_GLYPH + 0;
+		m_indecies[ci + 19] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
+		m_indecies[ci + 20] = cg * NUMBER_OF_VERTS_IN_GLYPH + 4;
+		m_indecies[ci + 21] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
+		m_indecies[ci + 22] = cg * NUMBER_OF_VERTS_IN_GLYPH + 4;
+		m_indecies[ci + 23] = cg * NUMBER_OF_VERTS_IN_GLYPH + 6;
 
-		m_indecies[ci + 24] = cg * 8 + 2;
-		m_indecies[ci + 25] = cg * 8 + 3;
-		m_indecies[ci + 26] = cg * 8 + 6;
-		m_indecies[ci + 27] = cg * 8 + 3;
-		m_indecies[ci + 28] = cg * 8 + 6;
-		m_indecies[ci + 29] = cg * 8 + 7;
+		m_indecies[ci + 24] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
+		m_indecies[ci + 25] = cg * NUMBER_OF_VERTS_IN_GLYPH + 3;
+		m_indecies[ci + 26] = cg * NUMBER_OF_VERTS_IN_GLYPH + 6;
+		m_indecies[ci + 27] = cg * NUMBER_OF_VERTS_IN_GLYPH + 3;
+		m_indecies[ci + 28] = cg * NUMBER_OF_VERTS_IN_GLYPH + 6;
+		m_indecies[ci + 29] = cg * NUMBER_OF_VERTS_IN_GLYPH + 7;
 
-		m_indecies[ci + 30] = cg * 8 + 4;
-		m_indecies[ci + 31] = cg * 8 + 5;
-		m_indecies[ci + 32] = cg * 8 + 6;
-		m_indecies[ci + 33] = cg * 8 + 5;
-		m_indecies[ci + 34] = cg * 8 + 6;
-		m_indecies[ci + 35] = cg * 8 + 7;
+		m_indecies[ci + 30] = cg * NUMBER_OF_VERTS_IN_GLYPH + 4;
+		m_indecies[ci + 31] = cg * NUMBER_OF_VERTS_IN_GLYPH + 5;
+		m_indecies[ci + 32] = cg * NUMBER_OF_VERTS_IN_GLYPH + 6;
+		m_indecies[ci + 33] = cg * NUMBER_OF_VERTS_IN_GLYPH + 5;
+		m_indecies[ci + 34] = cg * NUMBER_OF_VERTS_IN_GLYPH + 6;
+		m_indecies[ci + 35] = cg * NUMBER_OF_VERTS_IN_GLYPH + 7;
 
-	/*	vertecies[cv++] = m_glyphs[cg].vertecies[0];
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];
-		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-	
-
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-		vertecies[cv++] = m_glyphs[cg].vertecies[7];
-	
-		vertecies[cv++] = m_glyphs[cg].vertecies[0];
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];	
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];
-	
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];	
-		vertecies[cv++] = m_glyphs[cg].vertecies[3];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];
-		vertecies[cv++] = m_glyphs[cg].vertecies[7];
-	
-		vertecies[cv++] = m_glyphs[cg].vertecies[4];
-		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];	
-		vertecies[cv++] = m_glyphs[cg].vertecies[5];
-		vertecies[cv++] = m_glyphs[cg].vertecies[6];
-		vertecies[cv++] = m_glyphs[cg].vertecies[7];*/
 		ci +=36;
 		offset += 36;
 	}	

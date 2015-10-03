@@ -1,7 +1,6 @@
 #include "Block.h"
 #include "EasyErrors.h"
 #include <ctime>
-const float RENDER_DISTANCE = 100.0f;
 
 std::mt19937 randEngine(time(NULL));
 std::uniform_int_distribution<int> distribution(0, 255);
