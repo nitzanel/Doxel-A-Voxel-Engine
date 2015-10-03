@@ -75,7 +75,6 @@ int main()
 	m_fpsCounter.start();
 
 
-	Color8 colors[8] {Color8(255, 255, 255, 255), Color8(255, 0, 0, 255), Color8(255, 255, 0, 255), Color8(255, 0, 255, 255), Color8(0, 255, 0, 255), Color8(125, 255, 0, 255), Color8(255, 50, 120, 255), Color8(0, 255, 120, 255) };
 	// This is the game loop
 	while (!m_window.shouldWindowClose())
 	{
