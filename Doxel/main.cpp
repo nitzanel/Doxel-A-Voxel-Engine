@@ -182,7 +182,7 @@ int main()
 		glm::mat4 view = m_camera.getViewMatrix();
 		glm::mat4 mvp = projection * view * model;
 
-	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* 100,0,sinf(time / 2)* 100);
+		glm::vec3 lightPos = glm::vec3(cosf(time / 2)* 100,0,sinf(time / 2)* 100);
 	//	glm::vec3 lightPos = m_camera.getPosition() + glm::vec3(0, 0, 50);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
@@ -197,7 +197,7 @@ int main()
 
 		m_chunkManager.draw(&m_drawBatch);
 		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(CHUNK_SIZE * NUM_CHUNKS, CHUNK_SIZE * NUM_CHUNKS, EPSILON), Color8(255, 255, 255, 255), true);
-	//	m_drawBatch.draw(lightPos, glm::vec3(10, 10, 10), Color8(255, 255, 255, 255));
+		m_drawBatch.draw(lightPos, glm::vec3(10, 10, 10), Color8(255, 255, 255, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
 		
