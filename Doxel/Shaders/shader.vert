@@ -1,33 +1,31 @@
 #version 330 core
  
-in vec3 position;
-in vec4 vertexColor;
-in vec3 normalVec;
+in vec3 position; // the vertex position.
+in vec4 vertexColor; // the vertex color.
+in vec3 normalVec; // the vertex normal.
 
-uniform mat4 mvp;
-uniform mat4 m;
-uniform mat4 v;
-uniform vec3 lightPosition_worldSpace;
+uniform mat4 mvp; // the projection * view * model matrix.
+uniform mat4 m; // the model matrix.
+uniform mat4 v; // the view matrix.
+uniform vec3 lightPosition_worldSpace; // the position of the light object in world space coordinations.
 
-out vec4 color;
-out vec3 normal_cameraspace;
-out vec3 lightDirection_cameraspace;
+out vec4 color; // the color that passes to the fragment shader.
+out vec3 normal_cameraSpace; // the vertex normal in camera space.
+out vec3 lightDirection_cameraSpace; // the direction of the light in camera space.
 void main ()
 {
 	color = vertexColor;
 	gl_Position = mvp * vec4(position.xyz, 1.0);
 
-	// position of the vertex in world space : model * position.
-	vec3 positionWorldSpace = (m * vec4(position,1)).xyz;
-	
 	//vector that goes from the vertex to the camera, in camera space.
-	vec3 vertexPosition_cameraspace = (v * m * vec4(position,1)).xyz;
-	vec3 eyeDirection_cameraspace = /*vec3(0,0,0) -*/ vertexPosition_cameraspace;
+	// in the camera space, the camera is at (0,0,0).
+	vec3 vertexPosition_cameraSpace = (v * m * vec4(position,1)).xyz;
+	vec3 eyeDirection_cameraSpace = vec3(0,0,0) - vertexPosition_cameraSpace;
 	
 	//vector that goes from the vertex to the light, in camera space. m is omitted because its identity
-	vec3 lightPosition_cameraspace = (v * vec4(lightPosition_worldSpace,1)).xyz;
-	lightDirection_cameraspace = lightPosition_cameraspace + eyeDirection_cameraspace;
+	vec3 lightPosition_cameraSpace = (v * vec4(lightPosition_worldSpace,1)).xyz;
+	lightDirection_cameraSpace = lightPosition_cameraSpace + eyeDirection_cameraSpace;
 	// Normal of the the vertex, in camera space
-	normal_cameraspace = (v * m * vec4(normalVec,0)).xyz;
+	normal_cameraSpace = (v * m * vec4(normalVec,0)).xyz;
 
 }

@@ -86,7 +86,7 @@
     <ClInclude Include="ImageLoader.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
-    <ClInclude Include="picoPNG.h" />
+    <ClInclude Include="OBBRayPicking.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />
@@ -102,7 +102,7 @@
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="picoPNG.cpp" />
+    <ClCompile Include="OBBRayPicking.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>

@@ -30,9 +30,6 @@
     <ClInclude Include="IOManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="picoPNG.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ImageLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -60,6 +57,9 @@
     <ClInclude Include="Block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="OBBRayPicking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera3D.cpp">
@@ -72,9 +72,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IOManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="picoPNG.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ImageLoader.cpp">
@@ -99,6 +96,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OBBRayPicking.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -20,8 +20,8 @@ int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	const int width = 900;
-	const int height = 900;
+	const int width = 1600;
+	const int height = 1200;
 
 	if (!glfwInit())
 	{
@@ -196,7 +196,7 @@ int main()
 
 
 		m_chunkManager.draw(&m_drawBatch);
-	//	m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(10000.0, 10000.0, 0.1), Color8(255,255,255,255),true);
+		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(CHUNK_SIZE * NUM_CHUNKS, CHUNK_SIZE * NUM_CHUNKS, EPSILON), Color8(255, 255, 255, 255), true);
 	//	m_drawBatch.draw(lightPos, glm::vec3(10, 10, 10), Color8(255, 255, 255, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();

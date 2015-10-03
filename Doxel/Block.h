@@ -3,10 +3,11 @@
 #include "DrawBatch.h"
 #include <random>
 #include "Vertex.h"
-const int CHUNKSIZE = 8;
-const int NUM_CHUNKS = 10;
 
-
+#define CHUNK_SIZE  8
+#define NUM_CHUNKS 10
+#define BLOCK_WIDTH 1
+#define EPSILON 0.001
 
 enum GEN_METHOD
 {
@@ -96,7 +97,19 @@ public:
 		- const glm::vec3 &cameraPos - the camera position.
 	*/
 	void update(const glm::vec3 &cameraPos);
+	/*
+	This function sets the chunks generation method.
+	Input:
+		- GEN_METHOD method -	* RANDOM for randomized generation.
+								* SPHERE for sphere like generation.
+								* ALL for all blocks to be generated.
+	*/
 	void setGenMethod(GEN_METHOD method);
+	/*
+	This function will call the draw function in the needed chunks.
+	Input:
+		- DrawBatch* drawBatch - a pointer to the DrawBatch object that will draw the chunks. 
+	*/
 	void draw(DrawBatch* drawBatch);
 
 
