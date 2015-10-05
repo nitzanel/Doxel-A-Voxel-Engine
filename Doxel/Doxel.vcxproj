@@ -83,6 +83,7 @@
     <ClInclude Include="GLProgram.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="OBBRayPicking.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Vertex.h" />

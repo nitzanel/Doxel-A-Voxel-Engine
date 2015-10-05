@@ -19,7 +19,8 @@ void OBBRayPicking::screenPosToWorldRay(
 	const glm::mat4 &ProjectionMatrix,         // Camera parameters (ratio, field of view, near and far planes)
 	glm::vec3 &out_origin,              // Ouput : Origin of the ray. /!\ Starts at the near plane, so if you want the ray to start at the camera's position instead, ignore this.
 	glm::vec3 &out_direction            // Ouput : Direction, in world space, of the ray that goes "through" the mouse.
-	){
+	)
+{
 
 	// The ray Start and End positions, in Normalized Device Coordinates
 	glm::vec4 lRayStart_NDC(

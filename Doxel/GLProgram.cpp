@@ -32,3 +32,15 @@ void GLProgram::uploadUniformVector3(char* name, int num, glm::vec3 &uni)
 	const GLfloat* value = glm::value_ptr(uni);
 	glUniform3fv(uniLoc, 1, value);
 }
+
+void GLProgram::uploadUniformFloat(char* name, int num, float val)
+{
+	const GLint uniLoc = getUniformLocation(name);
+	glUniform1f(uniLoc, val);
+}
+void GLProgram::uploadUniformVector4(char* name, int num, glm::vec4& val)
+{
+	const GLint uniLoc = getUniformLocation(name);
+	const GLfloat* value = glm::value_ptr(val);
+	glUniform3fv(uniLoc, 1, value);
+}

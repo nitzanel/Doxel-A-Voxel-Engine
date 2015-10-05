@@ -107,7 +107,6 @@ void DrawBatch::createRenderBatches()
 	{
 		m_renderBatches.back().numVertecies += NUMBER_OF_INDECIES_IN_A_CUBE;
 
-		
 		vertecies[cv++] = m_glyphs[cg].vertecies[0];
 		vertecies[cv++] = m_glyphs[cg].vertecies[1];
 		vertecies[cv++] = m_glyphs[cg].vertecies[2];
@@ -116,14 +115,7 @@ void DrawBatch::createRenderBatches()
 		vertecies[cv++] = m_glyphs[cg].vertecies[5];
 		vertecies[cv++] = m_glyphs[cg].vertecies[6];
 		vertecies[cv++] = m_glyphs[cg].vertecies[7];
-
-		/*vertecies[cv++] = m_glyphs[cg].vertecies[0];
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[1];
-		vertecies[cv++] = m_glyphs[cg].vertecies[2];
-		vertecies[cv++] = m_glyphs[cg].vertecies[3];*/
-		
+	
 		m_indecies[ci + 0] = cg * NUMBER_OF_VERTS_IN_GLYPH + 0;
 		m_indecies[ci + 1] = cg * NUMBER_OF_VERTS_IN_GLYPH + 1;
 		m_indecies[ci + 2] = cg * NUMBER_OF_VERTS_IN_GLYPH + 2;
@@ -209,7 +201,7 @@ void DrawBatch::createVertexArray()
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
 	glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_TRUE, sizeof(Vertex), (void*)offsetof(Vertex, color));
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
+	glVertexAttribPointer(2, 4, GL_BYTE, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glBindVertexArray(0);
 }
 

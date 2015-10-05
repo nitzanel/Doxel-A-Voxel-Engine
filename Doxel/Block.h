@@ -8,7 +8,7 @@
 #define NUM_CHUNKS 10
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
-#define RENDER_DISTANCE 300.0f
+#define RENDER_DISTANCE 100.0f
 
 enum GEN_METHOD
 {

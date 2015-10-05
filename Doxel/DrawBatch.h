@@ -69,14 +69,14 @@ public:
 		normalVecs[4] = glm::normalize(glm::cross(vertecies[3].positionToGlm() - vertecies[2].positionToGlm(), vertecies[6].positionToGlm() - vertecies[2].positionToGlm()));
 		normalVecs[5] = glm::normalize(glm::cross(vertecies[5].positionToGlm() - vertecies[4].positionToGlm(), vertecies[6].positionToGlm() - vertecies[4].positionToGlm()));
 
-		vertecies[0].setNormal(glm::normalize(normalVecs[0] + normalVecs[1] + normalVecs[2]));
-		vertecies[1].setNormal(glm::normalize(normalVecs[0] + normalVecs[1] + normalVecs[3]));
-		vertecies[2].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[4]));
-		vertecies[3].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[3]));
-		vertecies[4].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[5]));
-		vertecies[5].setNormal(glm::normalize(normalVecs[0] + normalVecs[3] + normalVecs[5]));
-		vertecies[6].setNormal(glm::normalize(normalVecs[2] + normalVecs[4] + normalVecs[5]));
-		vertecies[7].setNormal(glm::normalize(normalVecs[3] + normalVecs[4] + normalVecs[5]));
+		vertecies[0].setNormal(normalVecs[0] + normalVecs[1] + normalVecs[2]);
+		vertecies[1].setNormal(normalVecs[0] + normalVecs[1] + normalVecs[3]);
+		vertecies[2].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[4]);
+		vertecies[3].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[3]);
+		vertecies[4].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[5]);
+		vertecies[5].setNormal(normalVecs[0] + normalVecs[3] + normalVecs[5]);
+		vertecies[6].setNormal(normalVecs[2] + normalVecs[4] + normalVecs[5]);
+		vertecies[7].setNormal(normalVecs[3] + normalVecs[4] + normalVecs[5]);
 
 
 	};
@@ -113,14 +113,16 @@ public:
 		normalVecs[4] = glm::normalize(glm::cross(vertecies[3].positionToGlm() - vertecies[2].positionToGlm(), vertecies[6].positionToGlm() - vertecies[2].positionToGlm()));
 		normalVecs[5] = glm::normalize(glm::cross(vertecies[5].positionToGlm() - vertecies[4].positionToGlm(), vertecies[6].positionToGlm() - vertecies[4].positionToGlm()));
 
-		vertecies[0].setNormal(glm::normalize(normalVecs[0] + normalVecs[1] + normalVecs[2]));
-		vertecies[1].setNormal(glm::normalize(normalVecs[0] + normalVecs[1] + normalVecs[3]));
-		vertecies[2].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[4]));
-		vertecies[3].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[3]));
-		vertecies[4].setNormal(glm::normalize(normalVecs[0] + normalVecs[2] + normalVecs[5]));
-		vertecies[5].setNormal(glm::normalize(normalVecs[0] + normalVecs[3] + normalVecs[5]));
-		vertecies[6].setNormal(glm::normalize(normalVecs[2] + normalVecs[4] + normalVecs[5]));
-		vertecies[7].setNormal(glm::normalize(normalVecs[3] + normalVecs[4] + normalVecs[5]));
+		vertecies[0].setNormal(normalVecs[0] + normalVecs[1] + normalVecs[2]);
+		vertecies[1].setNormal(normalVecs[0] + normalVecs[1] + normalVecs[3]);
+		vertecies[2].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[4]);
+		vertecies[3].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[3]);
+		vertecies[4].setNormal(normalVecs[0] + normalVecs[2] + normalVecs[5]);
+		vertecies[5].setNormal(normalVecs[0] + normalVecs[3] + normalVecs[5]);
+		vertecies[6].setNormal(normalVecs[2] + normalVecs[4] + normalVecs[5]);
+		vertecies[7].setNormal(normalVecs[3] + normalVecs[4] + normalVecs[5]);
+
+
 	};
 	/*
 	The glyph's vertecies array.

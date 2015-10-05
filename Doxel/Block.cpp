@@ -50,8 +50,6 @@ Chunk::~Chunk()
 
 void Chunk::init()
 {
-
-
 	if (!isInit)
 	{
 		// Create the blocks
@@ -73,6 +71,7 @@ void Chunk::init()
 			m_color = Color8(R, G, B, 255);
 			wasInit = true;
 		}
+		shouldUpdate = true;
 		isInit = true;
 	}
 }
@@ -227,10 +226,6 @@ void ChunkManager::init()
 	for (int i = 0; i < NUM_CHUNKS; i++)
 	{
 		m_chunks[i] = new Chunk[NUM_CHUNKS];
-	/*	for (int j = 0; j < NUM_CHUNKS; j++)
-		{
-		//	m_chunks[i][j].init();
-		}*/
 	}
 }
 
@@ -254,11 +249,8 @@ void ChunkManager::update(const glm::vec3 &cameraPos)
 				glm::vec2 chunkPos(i * CHUNK_SIZE * BLOCK_WIDTH, j * CHUNK_SIZE * BLOCK_WIDTH);
 				glm::vec2 dist = cameraPosXY - chunkPos;
 				
-
-				//if (glm::abs(glm::distance(cameraPosXY, chunkPos)) < RENDER_DISTANCE)
 				if (glm::abs(glm::length(dist)) < RENDER_DISTANCE)
 				{	
-					//Debug_Log(glm::distance(cameraPosXY, chunkPos));
 					m_chunks[i][j].init();
 					m_chunks[i][j].setActive(true);
 					m_chunks[i][j].update();
@@ -269,11 +261,6 @@ void ChunkManager::update(const glm::vec3 &cameraPos)
 				}
 			}			
 		}
-
-
-
-	//	lastCameraPos = cameraPos;
-	//}
 }
 void ChunkManager::setGenMethod(GEN_METHOD method)
 {

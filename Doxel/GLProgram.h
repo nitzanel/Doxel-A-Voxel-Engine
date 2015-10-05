@@ -63,8 +63,8 @@ public:
 	-glm::vec3 &uni - the uniform vector you want to upload.
 	*/
 	void uploadUniformVector3(char* name, int num, glm::vec3 &uni);
-
-
+	void uploadUniformFloat(char* name, int num, float val);
+	void uploadUniformVector4(char* name, int num , glm::vec4 &val);
 private:
 	GLuint m_programID;
 	Shader m_shaders;

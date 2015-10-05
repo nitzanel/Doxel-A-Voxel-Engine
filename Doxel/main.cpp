@@ -15,6 +15,7 @@
 #include "FpsCounter.h"
 #include "DrawBatch.h"
 #include "Block.h"
+#include "Light.h"
 
 int main()
 {
@@ -70,6 +71,9 @@ int main()
 	//ChunkStuff
 	ChunkManager m_chunkManager;
 	m_chunkManager.init();
+
+	Light m_light;
+	m_light.init(glm::vec3(0, 0, 100), Color3f(1.0,0,0), 1, &m_glProgram);
 
 	m_fpsCounter.start();
 
@@ -153,7 +157,7 @@ int main()
 			m_camera.setUpDir(glm::vec3(0, 0, 1));
 			m_camera.setSpeed(0.1f);
 		}
-		if (m_inputManager.isKeyPressed(KEYS::R))
+		if (m_inputManager.isKeyPressed(KEYS::R) || m_inputManager.isKeyHeldDown(KEYS::R))
 		{
 			m_chunkManager.setGenMethod(GEN_METHOD::RANDOM);
 		}
@@ -174,11 +178,12 @@ int main()
 		glm::mat4 mvp = projection * view * model;
 
 		glm::vec3 lightPos = glm::vec3(cosf(time / 2)* 100,0,sinf(time / 2)* 100);
-	//	glm::vec3 lightPos = m_camera.getPosition() + glm::vec3(0, 0, 50);
+		m_light.setPosition(lightPos);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("v", 1, view, GL_FALSE);
-		m_glProgram.uploadUniformVector3("lightPosition_worldSpace", 1, lightPos);
+		
+		m_light.update();
 
 		m_chunkManager.update(m_camera.getPosition());
 
@@ -187,15 +192,10 @@ int main()
 
 
 		m_chunkManager.draw(&m_drawBatch);
-		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3(CHUNK_SIZE * NUM_CHUNKS, CHUNK_SIZE * NUM_CHUNKS, EPSILON), Color8(255, 255, 255, 255), true);
-		m_drawBatch.draw(lightPos, glm::vec3(10, 10, 10), Color8(255, 255, 255, 255));
+		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3((CHUNK_SIZE+1) * (NUM_CHUNKS), (CHUNK_SIZE+1) * (NUM_CHUNKS), EPSILON * 100), Color8(250, 214, 165, 255), true);
+		m_drawBatch.draw(m_light.getPosition(), glm::vec3(10, 10, 10), Color8(255, 252, 127, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
-		
-	
-
-	
-		
 
 		// update the window
 		m_window.update();

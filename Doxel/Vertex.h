@@ -2,13 +2,30 @@
 
 #include <GL\glew.h>
 #include <glm\glm.hpp>
+
+typedef unsigned char byte;
+
 /*
 The Position struct.
 */
-struct Position {
-
+struct Position 
+{
 	float x, y, z;
 };
+struct PositionByte 
+{
+	byte x, y, z,w;
+};
+/*
+Normal in bytes.
+Note : only works with non-rotated cubes.
+additional note, byte w can be used for what-ever.
+*/
+struct NormalByte
+{
+	byte x, y, z, w;
+};
+
 /*
 The Normal struct.
 */
@@ -16,6 +33,8 @@ struct Normal
 {
 	float x, y, z;
 };
+
+
 
 /*
 The Color8 struct.
@@ -40,7 +59,8 @@ The Vertex struct.
 A struct that contains other struct.
 Also known as composition struct.
 */
-struct Vertex{
+struct Vertex
+{
 	/*
 	position object.
 	*/
@@ -52,7 +72,7 @@ struct Vertex{
 	/*
 	normal object.
 	*/
-	Normal normal;
+	NormalByte normal;
 	/*
 	Set the position of the vertex.
 	Input:
