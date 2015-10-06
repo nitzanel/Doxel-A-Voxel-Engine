@@ -26,6 +26,7 @@ struct NormalByte
 	byte x, y, z, w;
 };
 
+
 /*
 The Normal struct.
 */

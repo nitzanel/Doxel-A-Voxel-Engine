@@ -125,6 +125,8 @@ void Chunk::setActive(bool state)
 
 void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 {
+	Color8 colors[] {Color8(102, 51, 0, 255), Color8(124, 252, 0, 255) };
+
 	for (int i = 0; i < CHUNK_SIZE; i++)
 	{
 		for (int j = 0; j < CHUNK_SIZE; j++)
@@ -133,8 +135,41 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 			{
 				if (m_blocks[i][j][k].getActive())
 				{
+					bool iNegative = false;
+					if (i > 0)
+						iNegative = m_blocks[i - 1][j][k].getActive();
+
+					bool iPositive = false;
+					if (i < CHUNK_SIZE - 1)
+						iPositive = m_blocks[i + 1][j][k].getActive();
+					bool jNegative = false;
+					if (j > 0)
+						jNegative = m_blocks[i][j - 1][k].getActive();
+					bool jPositive = false;
+					if (j < CHUNK_SIZE - 1)
+						jPositive = m_blocks[i][j + 1][k].getActive();
+
+					bool kNegative = false;
+					if (k > 0)
+						kNegative = m_blocks[i][j][k - 1].getActive();
+
+					bool kPositive = false;
+					if (k < CHUNK_SIZE - 1)
+						kPositive = m_blocks[i][j][k + 1].getActive();
+					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
+					{
+						continue;
+					}
 					glm::vec3 bPos(ChunkPos.x +i ,ChunkPos.y + j,k);
-					drawBatch->draw(bPos, glm::vec3(1.0), m_color);
+					if (!kPositive)
+					{
+						drawBatch->draw(bPos, glm::vec3(1.0), colors);
+					}
+					else
+					{
+						drawBatch->draw(bPos, glm::vec3(1.0), colors[0]);
+					}
+					
 					
 				}
 			}

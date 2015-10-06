@@ -15,6 +15,6 @@ void main()
 	vec4 materialAmbientColor = vec4(0.1,0.1,0.1,1) * color;
 	float cosTheta = clamp(dot(n,l), 0,1);
 
-    colorOut =  materialAmbientColor + (vec4(color) * cosTheta) +(lightIntensity * lightColor);
+    colorOut = materialAmbientColor + (vec4(color) * cosTheta)+ (lightIntensity * lightColor);
 }
 
