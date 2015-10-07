@@ -5,7 +5,7 @@
 #include "Vertex.h"
 
 #define CHUNK_SIZE  8
-#define NUM_CHUNKS 100
+#define NUM_CHUNKS 10
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
 #define RENDER_DISTANCE 200.0f
@@ -66,6 +66,21 @@ public:
 			m_genMethod = method;
 			shouldUpdate = true;		
 	}
+	/*
+	Returns true if a block is active, false if not.
+	*/
+	bool getActiveBlock(unsigned int x, unsigned int y, unsigned int z)
+	{
+		if (isInit)
+		{
+			if (m_blocks[x][y][z].getActive())
+			{
+				return true;
+			}
+		}
+			return false;
+		
+	}
 
 	/*
 	Init the chunk.
@@ -116,6 +131,13 @@ public:
 	Generate all the blocks in the chunk.
 	*/
 	void genAll();
+	/*
+	Activate or deactivate a block
+	*/
+	void setBlock(unsigned int x, unsigned int y, unsigned int z,bool state)
+	{
+		m_blocks[x][y][z].setActive(state);
+	}
 	
 private:
 	Block*** m_blocks;
@@ -163,8 +185,27 @@ public:
 		- DrawBatch* drawBatch - a pointer to the DrawBatch object that will draw the chunks. 
 	*/
 	void draw(DrawBatch* drawBatch);
-
-
+	/*
+	Activate or deactivate a specific block in a specific chunk.
+	*/
+	void setBlock(unsigned chunkX, unsigned chunkY, unsigned int blockX, unsigned int blockY, unsigned int blockZ, bool state)
+	{
+		m_chunks[chunkX][chunkY].setBlock(blockX, blockY, blockZ, state);
+	}
+	/*
+	returns if a block is active
+	*/
+	bool getActiveBlock(unsigned chunkX, unsigned chunkY, unsigned int blockX, unsigned int blockY, unsigned int blockZ)
+	{
+		return m_chunks[chunkX][chunkY].getActiveBlock(blockX, blockY, blockZ);
+	}
+	/*
+	returns if a chunk is active
+	*/
+	bool getActiveChunk(unsigned chunkX, unsigned chunkY)
+	{
+		return m_chunks[chunkX][chunkY].isActive;
+	}
 private:
 	glm::vec3 lastCameraPos;
 	Chunk** m_chunks;

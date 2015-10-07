@@ -12,9 +12,15 @@ void main()
 {
 	vec3 n = normalize(normal_cameraSpace);
 	vec3 l = normalize(lightDirection_cameraSpace);
-	vec4 materialAmbientColor = vec4(0.1,0.1,0.1,1) * color;
-	float cosTheta = clamp(dot(n,l), 0,1);
+	
+	vec4 ambient = vec4(0.1,0.1,0.1,1.0) * lightColor;
+	
+	float diff = max(dot(n,l), 0.0);
 
-    colorOut = materialAmbientColor + (vec4(color) * cosTheta)+ (lightIntensity * lightColor);
+	vec4 diffuse = vec4(diff * lightColor);
+
+	//colorOut = vec4((ambient + diffuse) * color);
+
+   colorOut = ambient * color + color * diff+ lightIntensity * lightColor;
 }
 

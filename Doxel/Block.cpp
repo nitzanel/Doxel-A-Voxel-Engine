@@ -160,14 +160,14 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 					{
 						continue;
 					}
-					glm::vec3 bPos(ChunkPos.x +i ,ChunkPos.y + j,k);
-					if (!kPositive)
+					glm::vec3 bPos(ChunkPos.x + i, j, ChunkPos.y + k);
+					if (!jPositive)
 					{
 						drawBatch->draw(bPos, glm::vec3(1.0), colors);
 					}
 					else
 					{
-						drawBatch->draw(bPos, glm::vec3(1.0), colors[0]);
+						drawBatch->draw(bPos, glm::vec3(1.0), m_color);
 					}
 					
 					
@@ -196,7 +196,6 @@ void Chunk::genRand(int numBlocks)
 
 			if (randBool(randEngine))
 			{
-
 				if (!m_blocks[x][y][z].getActive())
 				{
 					m_blocks[x][y][z].setActive(true);
@@ -246,7 +245,6 @@ void Chunk::genAll()
 			{
 				m_blocks[x][y][z].setActive(true);
 			}
-
 		}
 	}
 }

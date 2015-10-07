@@ -116,8 +116,8 @@ private:
 	glm::mat4 m_view;
 	glm::mat4 m_projection;
 	glm::vec3 m_position;
-	glm::vec3 m_upVec = glm::vec3(0.0f, 0.0f, 1.0f);
-	glm::vec3 m_direction = glm::normalize(glm::vec3(1.0f, 1.0f, 0));
+	glm::vec3 m_upVec = glm::vec3(0.0f, 1.0f, 0.0f);
+	glm::vec3 m_direction = glm::normalize(glm::vec3(1.0f,0.0f, 0));
 
 	glm::mat4 proj, vie, clip;
 	float frustum[6][4];

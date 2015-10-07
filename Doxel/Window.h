@@ -50,6 +50,9 @@ public:
 
 	GLFWwindow *getGlfwWindow() { return m_window; }
 
+	int getWidth() { return m_width; }
+	int getHeight() { return m_height; }
+
 private:
 	GLFWwindow* m_window = nullptr;
 	int m_width = 0, m_height = 0;

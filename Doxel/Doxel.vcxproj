@@ -85,6 +85,7 @@
     <ClInclude Include="IOManager.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="OBBRayPicking.h" />
+    <ClInclude Include="RayPicking.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Vertex.h" />
     <ClInclude Include="Window.h" />

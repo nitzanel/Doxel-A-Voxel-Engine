@@ -16,6 +16,7 @@
 #include "DrawBatch.h"
 #include "Block.h"
 #include "Light.h"
+#include "OBBRayPicking.h"
 
 int main()
 {
@@ -49,7 +50,8 @@ int main()
 	
 	
 	glEnable(GL_DEPTH_TEST);
-	
+	//glEnable(GL_CULL_FACE);
+	//glCullFace(GL_BACK);
 
 	DrawBatch m_drawBatch;
 	m_drawBatch.init(&m_camera);
@@ -77,6 +79,24 @@ int main()
 
 	m_fpsCounter.start();
 
+	OBBRayPicking rayPicker;
+	
+	struct cubeClicked
+	{
+		void setChunk(unsigned int x, unsigned int z)
+		{
+			chunkX = x;
+			chunkZ = z;
+		}
+		void setBlock(unsigned int x, unsigned int y, unsigned int z)
+		{
+			blockX = x;
+			blockY = y;
+			blockZ = z;
+		}
+		unsigned int chunkX,chunkZ, blockX, blockY, blockZ;
+		float distance;
+	};
 
 	// This is the game loop
 	while (!m_window.shouldWindowClose())
@@ -152,9 +172,9 @@ int main()
 		}
 		if (m_inputManager.isKeyPressed(KEYS::SPACE))
 		{
-			m_camera.setPosition(glm::vec3(0));
-			m_camera.setDirection(glm::vec3(1, 1, 0));
-			m_camera.setUpDir(glm::vec3(0, 0, 1));
+			m_camera.setPosition(glm::vec3(0)); 
+			m_camera.setDirection(glm::vec3(1, 0, 0));
+			m_camera.setUpDir(glm::vec3(0, 1, 0));
 			m_camera.setSpeed(0.1f);
 		}
 		if (m_inputManager.isKeyPressed(KEYS::R) || m_inputManager.isKeyHeldDown(KEYS::R))
@@ -176,7 +196,83 @@ int main()
 
 		glm::mat4 view = m_camera.getViewMatrix();
 		glm::mat4 mvp = projection * view * model;
+		
+		// ray picking
+		if (m_inputManager.isKeyPressed(KEYS::MOUSE_LEFT)){
+			cubeClicked bestCube;
+			bestCube.distance = 10000.0f;
+			glm::vec3 rayOrigin;
+			glm::vec3 rayDirection;
+			glm::vec3 aabbMax(BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH);
+			glm::vec3 aabbMin(0.0, 0.0, 0.0);
+			float distance;
+			rayPicker.screenPosToWorldRay(m_inputManager.getCurrentMouseCoords().x, m_window.getHeight() - m_inputManager.getCurrentMouseCoords().y, m_window.getWidth(), m_window.getHeight(), view, projection, rayOrigin, rayDirection);
+			bool procced = true;
+			// THE SUPER LOOP
+			for (unsigned int chunkX = 0; chunkX < NUM_CHUNKS; chunkX++)
+			{
+				if (!procced)
+				{
+					break;
+				}
+				for (unsigned int chunkZ = 0; chunkZ < NUM_CHUNKS; chunkZ++)
+				{
+					if (!procced)
+					{
+						break;
+					}
+					if (!m_chunkManager.getActiveChunk(chunkX, chunkZ))
+					{
+						continue;
+					}
+					for (unsigned int blockX = 0; blockX < CHUNK_SIZE; blockX++)
+					{
+						if (!procced)
+						{
+							break;
+						}
+						for (unsigned int blockY = 0; blockY < CHUNK_SIZE; blockY++)
+						{
+							if (!procced)
+							{
+								break;
+							}
+							for (unsigned int blockZ = 0; blockZ < CHUNK_SIZE; blockZ++)
+							{
+								if (!m_chunkManager.getActiveBlock(chunkX, chunkZ, blockX, blockY, blockZ))
+								{
+									continue;
+								}
+								if (!procced)
+								{
+									break;
+								}
 
+
+								if (rayPicker.testRayOBBIntersection(rayOrigin, rayDirection,
+									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH) + aabbMin,
+									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH) + aabbMax, model,
+									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH), distance))
+								{
+									if (bestCube.distance > distance)
+									{
+										bestCube.setChunk(chunkX, chunkZ);
+										bestCube.setBlock(blockX, blockY, blockZ);
+										bestCube.distance = distance; 
+									}
+												//		procced = false;
+								}
+							}
+						}
+					}
+				}
+			}
+			Debug_Log("INTERSECTION DISTANCE: " << bestCube.distance);
+			Debug_Log("CHUNK IS: " << bestCube.chunkX << "," << bestCube.chunkZ);
+			Debug_Log("BLOCK IS: " << bestCube.blockX << "," << bestCube.blockY << "," << bestCube.blockZ);
+			m_chunkManager.setBlock(bestCube.chunkX, bestCube.chunkZ, bestCube.blockX, bestCube.blockY, bestCube.blockZ, false);
+
+		}
 	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH * 1.1, sinf(time / 2) * CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH*1.1, CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH / 2);
 		m_light.setPosition(m_camera.getPosition());
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
@@ -192,7 +288,7 @@ int main()
 
 
 		m_chunkManager.draw(&m_drawBatch);
-		m_drawBatch.draw(glm::vec3(0, 0, -0.1), glm::vec3((CHUNK_SIZE+1) * (NUM_CHUNKS), (CHUNK_SIZE+1) * (NUM_CHUNKS), EPSILON * 100), Color8(250, 214, 165, 255), true);
+		m_drawBatch.draw(glm::vec3(0, -0.1, 0), glm::vec3((CHUNK_SIZE + 1) * (NUM_CHUNKS), EPSILON * 100, (CHUNK_SIZE + 1) * (NUM_CHUNKS)), Color8(250, 214, 165, 255), true);
 	//	m_drawBatch.draw(m_light.getPosition(), glm::vec3(10, 10, 10), Color8(255, 252, 127, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
