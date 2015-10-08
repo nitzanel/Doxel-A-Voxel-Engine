@@ -167,7 +167,7 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 					}
 					else
 					{
-						drawBatch->draw(bPos, glm::vec3(1.0), m_color);
+						drawBatch->draw(bPos, glm::vec3(1.0), colors[0]);
 					}
 					
 					
@@ -272,7 +272,7 @@ void ChunkManager::update(const glm::vec3 &cameraPos)
 {
 	glm::vec2 cameraPosXY(cameraPos.x, cameraPos.y);
 
-	Debug_Log(m_chunksDraw);
+	//Debug_Log(m_chunksDraw);
 	m_chunksDraw = 0;
 	
 	for (int i = 0; i < NUM_CHUNKS; i++)
@@ -316,7 +316,7 @@ void ChunkManager::draw(DrawBatch* drawBatch)
 			{
 				if (m_chunks[i][j].isInit)
 				{
-					m_chunks[i][j].draw(drawBatch, glm::vec2(i * CHUNK_SIZE + i, j * CHUNK_SIZE + j));
+					m_chunks[i][j].draw(drawBatch, glm::vec2(i * CHUNK_SIZE , j * CHUNK_SIZE ));
 					m_chunksDraw++;
 				}
 			}

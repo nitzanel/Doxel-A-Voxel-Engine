@@ -5,7 +5,7 @@
 #include "Vertex.h"
 
 #define CHUNK_SIZE  8
-#define NUM_CHUNKS 10
+#define NUM_CHUNKS 1
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
 #define RENDER_DISTANCE 200.0f
@@ -13,6 +13,34 @@
 enum GEN_METHOD
 {
 	RANDOM, SPHERE, ALL
+};
+
+
+/*
+BlockClicked struct.
+*/
+struct BlockClicked
+{
+	/*
+	set the chunk of the block clicked
+	*/
+	void setChunk(unsigned int x, unsigned int z)
+	{
+		chunkX = x;
+		chunkZ = z;
+	}
+	/*
+	set the block of the block clicked.
+	*/
+	void setBlock(unsigned int x, unsigned int y, unsigned int z)
+	{
+		blockX = x;
+		blockY = y;
+		blockZ = z;
+	}
+
+	unsigned int chunkX, chunkZ, blockX, blockY, blockZ;
+	float distance;
 };
 
 class Block
@@ -187,27 +215,46 @@ public:
 	void draw(DrawBatch* drawBatch);
 	/*
 	Activate or deactivate a specific block in a specific chunk.
+	Input:
+	-BlockClicked blockClicked - a BlockClicked struct with all the information needed.
+	-bool state- the new state of the block.
 	*/
-	void setBlock(unsigned chunkX, unsigned chunkY, unsigned int blockX, unsigned int blockY, unsigned int blockZ, bool state)
+	void setBlock(BlockClicked blockClicked,bool state)
 	{
-		m_chunks[chunkX][chunkY].setBlock(blockX, blockY, blockZ, state);
+		setBlock(blockClicked.chunkX, blockClicked.chunkZ, blockClicked.blockX, blockClicked.blockY, blockClicked.blockZ, state);
+	}
+	
+	/*
+	Activate or deactivate a specific block in a specific chunk.
+	*/
+	void setBlock(unsigned chunkX, unsigned chunkZ, unsigned int blockX, unsigned int blockY, unsigned int blockZ, bool state)
+	{
+		m_chunks[chunkX][chunkZ].setBlock(blockX, blockY, blockZ, state);
+	}
+	/*
+	returns if a block is active, takes a BlockClicked struct.
+	*/
+	bool getActiveBlock(BlockClicked blockClicked)
+	{
+		getActiveBlock(blockClicked.chunkX, blockClicked.chunkZ, blockClicked.blockX, blockClicked.blockY, blockClicked.blockZ);
 	}
 	/*
 	returns if a block is active
 	*/
-	bool getActiveBlock(unsigned chunkX, unsigned chunkY, unsigned int blockX, unsigned int blockY, unsigned int blockZ)
+	bool getActiveBlock(unsigned chunkX, unsigned chunkZ, unsigned int blockX, unsigned int blockY, unsigned int blockZ)
 	{
-		return m_chunks[chunkX][chunkY].getActiveBlock(blockX, blockY, blockZ);
+		return m_chunks[chunkX][chunkZ].getActiveBlock(blockX, blockY, blockZ);
 	}
 	/*
 	returns if a chunk is active
 	*/
-	bool getActiveChunk(unsigned chunkX, unsigned chunkY)
+	bool getActiveChunk(unsigned chunkX, unsigned chunkZ)
 	{
-		return m_chunks[chunkX][chunkY].isActive;
+		return m_chunks[chunkX][chunkZ].isActive;
 	}
 private:
 	glm::vec3 lastCameraPos;
 	Chunk** m_chunks;
 	int m_chunksDraw = 0;
 };
+

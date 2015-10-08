@@ -81,22 +81,9 @@ int main()
 
 	OBBRayPicking rayPicker;
 	
-	struct cubeClicked
-	{
-		void setChunk(unsigned int x, unsigned int z)
-		{
-			chunkX = x;
-			chunkZ = z;
-		}
-		void setBlock(unsigned int x, unsigned int y, unsigned int z)
-		{
-			blockX = x;
-			blockY = y;
-			blockZ = z;
-		}
-		unsigned int chunkX,chunkZ, blockX, blockY, blockZ;
-		float distance;
-	};
+	
+
+	std::vector<BlockClicked> m_clickedBlocks;
 
 	// This is the game loop
 	while (!m_window.shouldWindowClose())
@@ -193,13 +180,20 @@ int main()
 		auto t_now = std::chrono::high_resolution_clock::now();
 		float time = std::chrono::duration_cast<std::chrono::duration<float>>(t_now - t_start).count();
 
-
+	
 		glm::mat4 view = m_camera.getViewMatrix();
 		glm::mat4 mvp = projection * view * model;
 		
+
+		if (m_inputManager.isKeyPressed(KEYS::MOUSE_RIGHT))
+		{
+			m_chunkManager.setBlock(m_clickedBlocks.back(),true);
+			m_clickedBlocks.pop_back();
+		}
 		// ray picking
 		if (m_inputManager.isKeyPressed(KEYS::MOUSE_LEFT)){
-			cubeClicked bestCube;
+			bool intersected = false;
+			BlockClicked bestCube;
 			bestCube.distance = 10000.0f;
 			glm::vec3 rayOrigin;
 			glm::vec3 rayDirection;
@@ -250,15 +244,16 @@ int main()
 
 
 								if (rayPicker.testRayOBBIntersection(rayOrigin, rayDirection,
-									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH) + aabbMin,
-									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH) + aabbMax, model,
-									glm::vec3(chunkX * (CHUNK_SIZE + 1) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE + 1) + blockZ*BLOCK_WIDTH), distance))
+									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH) + aabbMin,
+									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH) + aabbMax, model,
+									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH), distance))
 								{
 									if (bestCube.distance > distance)
 									{
 										bestCube.setChunk(chunkX, chunkZ);
 										bestCube.setBlock(blockX, blockY, blockZ);
 										bestCube.distance = distance; 
+										intersected = true;
 									}
 												//		procced = false;
 								}
@@ -267,14 +262,18 @@ int main()
 					}
 				}
 			}
-			Debug_Log("INTERSECTION DISTANCE: " << bestCube.distance);
-			Debug_Log("CHUNK IS: " << bestCube.chunkX << "," << bestCube.chunkZ);
-			Debug_Log("BLOCK IS: " << bestCube.blockX << "," << bestCube.blockY << "," << bestCube.blockZ);
-			m_chunkManager.setBlock(bestCube.chunkX, bestCube.chunkZ, bestCube.blockX, bestCube.blockY, bestCube.blockZ, false);
-
+			if (intersected)
+			{
+				Debug_Log("INTERSECTION DISTANCE: " << bestCube.distance);
+				Debug_Log("CHUNK IS: " << bestCube.chunkX << "," << bestCube.chunkZ);
+				Debug_Log("BLOCK IS: " << bestCube.blockX << "," << bestCube.blockY << "," << bestCube.blockZ);
+				m_chunkManager.setBlock(bestCube.chunkX, bestCube.chunkZ, bestCube.blockX, bestCube.blockY, bestCube.blockZ, false);
+				m_clickedBlocks.push_back(bestCube);
+			}
 		}
 	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH * 1.1, sinf(time / 2) * CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH*1.1, CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH / 2);
-		m_light.setPosition(m_camera.getPosition());
+		glm::vec3 lightPos(4,4,10);
+		m_light.setPosition(lightPos);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("v", 1, view, GL_FALSE);
@@ -298,6 +297,7 @@ int main()
 
 		m_fpsCounter.end();
 	}
+	m_clickedBlocks.clear();
 	//m_chunkManager.dispose(); TODO:FIX
 	m_glProgram.deleteProgram();
 	
