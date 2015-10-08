@@ -187,8 +187,11 @@ int main()
 
 		if (m_inputManager.isKeyPressed(KEYS::MOUSE_RIGHT))
 		{
-			m_chunkManager.setBlock(m_clickedBlocks.back(),true);
-			m_clickedBlocks.pop_back();
+			if (!m_clickedBlocks.empty())
+			{
+				m_chunkManager.setBlock(m_clickedBlocks.back(), true);
+				m_clickedBlocks.pop_back();
+			}
 		}
 		// ray picking
 		if (m_inputManager.isKeyPressed(KEYS::MOUSE_LEFT)){
