@@ -44,7 +44,7 @@ int main()
 	InputManager m_inputManager;
 	m_inputManager.init(m_window.getGlfwWindow());
 
-	glm::vec3 cPos = glm::vec3(0);
+	glm::vec3 cPos = glm::vec3(-5,3,5);
 	Camera3D m_camera;
 	m_camera.init(cPos, 45.0f,m_window.getAspectRatio(),1.0, 10000);
 	
@@ -251,6 +251,10 @@ int main()
 									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH) + aabbMax, model,
 									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH), distance))
 								{
+									Debug_Log("INTERSECTION DISTANCE: " << distance);
+									Debug_Log("CHUNK IS: " << chunkX << "," << chunkZ);
+									Debug_Log("BLOCK IS: " << blockX << "," << blockY << "," << blockZ);
+									Debug_Log("");
 									if (bestCube.distance > distance)
 									{
 										bestCube.setChunk(chunkX, chunkZ);
@@ -267,6 +271,7 @@ int main()
 			}
 			if (intersected)
 			{
+				Debug_Log("CHOSEN");
 				Debug_Log("INTERSECTION DISTANCE: " << bestCube.distance);
 				Debug_Log("CHUNK IS: " << bestCube.chunkX << "," << bestCube.chunkZ);
 				Debug_Log("BLOCK IS: " << bestCube.blockX << "," << bestCube.blockY << "," << bestCube.blockZ);
