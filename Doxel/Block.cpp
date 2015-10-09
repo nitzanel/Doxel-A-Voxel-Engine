@@ -9,6 +9,7 @@ std::uniform_int_distribution<int> randBand(0, CHUNK_SIZE *CHUNK_SIZE*CHUNK_SIZE
 std::uniform_int_distribution<int> randBool(0, 1);
 
 
+
 Block::Block()
 {
 }
@@ -131,10 +132,16 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 	{
 		for (int j = 0; j < CHUNK_SIZE; j++)
 		{
+			std::vector<Row> rows;
+			
 			for (int k = 0; k < CHUNK_SIZE; k++)
 			{
+
 				if (m_blocks[i][j][k].getActive())
 				{
+					bool shouldDraw = true;
+					bool isGrass = false;
+
 					bool iNegative = false;
 					if (i > 0)
 						iNegative = m_blocks[i - 1][j][k].getActive();
@@ -158,10 +165,31 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 						kPositive = m_blocks[i][j][k + 1].getActive();
 					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
 					{
-						continue;
+						shouldDraw = false;
 					}
-					glm::vec3 bPos(ChunkPos.x + i, j, ChunkPos.y + k);
 					if (!jPositive)
+					{
+						isGrass = true;
+					
+					}
+					if (rows.empty())
+					{
+						rows.emplace_back(k, k, isGrass,shouldDraw);
+					}
+					else
+					{
+						
+						if ((rows.back().grass != isGrass) || (rows.back().shouldbeDrawn!= shouldDraw))
+						{
+							rows.emplace_back(k, k, isGrass, shouldDraw);
+						}
+						else
+						{
+							rows.back().end = k;
+						}
+					}
+					/*glm::vec3 bPos(ChunkPos.x + i, j, ChunkPos.y + k);
+					
 					{
 						drawBatch->draw(bPos, glm::vec3(1.0), colors);
 					}
@@ -169,9 +197,33 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 					{
 						drawBatch->draw(bPos, glm::vec3(1.0), colors[0]);
 					}
-					
+					*/
 					
 				}
+				
+			
+			}
+			for (int index = 0; index < rows.size(); index++)
+			{
+				rows[index].Update();
+				//Debug_Log("position of the row is" << i << "," << j << "," << (int)rows[index].start << "," << (int)rows[index].end<<"  should be drawn "<<rows[index].shouldbeDrawn);
+				if (rows[index].shouldbeDrawn)
+				{
+					glm::vec3 rowStart(ChunkPos.x + i, j, ChunkPos.y + rows[index].start);
+					glm::vec3 scale(BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH*rows[index].length);
+					if (rows[index].grass)
+					{
+						drawBatch->draw(rowStart, scale, colors);
+
+					}
+					else
+					{
+						drawBatch->draw(rowStart, scale, colors[0]);
+
+					}
+
+				}
+
 			}
 		}
 	}

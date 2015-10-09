@@ -10,12 +10,37 @@
 #define EPSILON 0.001
 #define RENDER_DISTANCE 200.0f
 
+
+
 enum GEN_METHOD
 {
 	RANDOM, SPHERE, ALL
 };
 
 
+struct Row
+{
+	Row()
+	{};
+	Row(byte Start, byte End,bool Grass,bool shouldDraw)
+	{
+		shouldbeDrawn = shouldDraw;
+		grass = Grass;
+		start = Start;
+		end = End;
+		length = end - start + 1;
+	}
+	void Update()
+	{
+		length = end - start + 1;
+	}
+	byte start;
+	byte end;
+	byte length;
+	bool grass;
+	bool shouldbeDrawn;
+	
+};
 /*
 BlockClicked struct.
 */
@@ -170,7 +195,7 @@ public:
 private:
 	Block*** m_blocks;
 	Color8 m_color;
-	GEN_METHOD m_genMethod = GEN_METHOD::RANDOM;
+	GEN_METHOD m_genMethod = GEN_METHOD::ALL;
 	bool wasInit = false;
 };
 
