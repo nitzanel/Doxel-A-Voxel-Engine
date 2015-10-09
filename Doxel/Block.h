@@ -5,7 +5,7 @@
 #include "Vertex.h"
 
 #define CHUNK_SIZE  8
-#define NUM_CHUNKS 1
+#define NUM_CHUNKS 10
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
 #define RENDER_DISTANCE 200.0f

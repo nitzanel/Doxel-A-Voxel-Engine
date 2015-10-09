@@ -24,7 +24,7 @@ void FpsCounter::end()
 
 	if (m_currentTime - m_lastTime >= 1.0)
 	{
-	//	Debug_Log(1000.0 / (double)m_numFrames << " ms for each frame.");
+		Debug_Log(1000.0 / (double)m_numFrames << " ms for each frame.");
 		m_numFrames = 0;
 		m_lastTime = glfwGetTime();
 	}

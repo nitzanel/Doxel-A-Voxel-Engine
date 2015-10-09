@@ -251,10 +251,10 @@ int main()
 									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH) + aabbMax, model,
 									glm::vec3(chunkX * (CHUNK_SIZE ) + (blockX*BLOCK_WIDTH), (blockY*BLOCK_WIDTH), chunkZ * (CHUNK_SIZE ) + blockZ*BLOCK_WIDTH), distance))
 								{
-									Debug_Log("INTERSECTION DISTANCE: " << distance);
+									/*Debug_Log("INTERSECTION DISTANCE: " << distance);
 									Debug_Log("CHUNK IS: " << chunkX << "," << chunkZ);
 									Debug_Log("BLOCK IS: " << blockX << "," << blockY << "," << blockZ);
-									Debug_Log("");
+									Debug_Log("");*/
 									if (bestCube.distance > distance)
 									{
 										bestCube.setChunk(chunkX, chunkZ);
@@ -280,7 +280,7 @@ int main()
 			}
 		}
 	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH * 1.1, sinf(time / 2) * CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH*1.1, CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH / 2);
-		glm::vec3 lightPos(4,4,10);
+		glm::vec3 lightPos(50,50,50);
 		m_light.setPosition(lightPos);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
