@@ -55,7 +55,7 @@ struct BlockClicked
 		chunkZ = z;
 	}
 	/*
-	set the block of the block clicked.
+	set the block of the BlockClicked.
 	*/
 	void setBlock(unsigned int x, unsigned int y, unsigned int z)
 	{

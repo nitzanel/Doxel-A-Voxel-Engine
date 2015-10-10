@@ -137,8 +137,8 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 			for (int k = 0; k < CHUNK_SIZE; k++)
 			{
 
-				if (m_blocks[i][j][k].getActive())
-				{
+				
+				
 					bool shouldDraw = true;
 					bool isGrass = false;
 
@@ -164,6 +164,10 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 					if (k < CHUNK_SIZE - 1)
 						kPositive = m_blocks[i][j][k + 1].getActive();
 					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
+					{
+						shouldDraw = false;
+					}
+					if (!m_blocks[i][j][k].getActive())
 					{
 						shouldDraw = false;
 					}
@@ -199,7 +203,7 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 					}
 					*/
 					
-				}
+				
 				
 			
 			}
