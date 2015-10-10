@@ -135,41 +135,41 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos)
 			std::vector<Row> rows;
 			
 			for (int k = 0; k < CHUNK_SIZE; k++)
-			{
-
-				
-				
+			{	
 					bool shouldDraw = true;
 					bool isGrass = false;
 
-					bool iNegative = false;
-					if (i > 0)
-						iNegative = m_blocks[i - 1][j][k].getActive();
-
-					bool iPositive = false;
-					if (i < CHUNK_SIZE - 1)
-						iPositive = m_blocks[i + 1][j][k].getActive();
-					bool jNegative = false;
-					if (j > 0)
-						jNegative = m_blocks[i][j - 1][k].getActive();
-					bool jPositive = false;
-					if (j < CHUNK_SIZE - 1)
-						jPositive = m_blocks[i][j + 1][k].getActive();
-
-					bool kNegative = false;
-					if (k > 0)
-						kNegative = m_blocks[i][j][k - 1].getActive();
-
-					bool kPositive = false;
-					if (k < CHUNK_SIZE - 1)
-						kPositive = m_blocks[i][j][k + 1].getActive();
-					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
-					{
-						shouldDraw = false;
-					}
 					if (!m_blocks[i][j][k].getActive())
 					{
 						shouldDraw = false;
+					}
+					bool jPositive = false;
+					if (shouldDraw)
+					{
+						bool iNegative = false;
+						if (i > 0)
+							iNegative = m_blocks[i - 1][j][k].getActive();
+
+						bool iPositive = false;
+						if (i < CHUNK_SIZE - 1)
+							iPositive = m_blocks[i + 1][j][k].getActive();
+						bool jNegative = false;
+						if (j > 0)
+							jNegative = m_blocks[i][j - 1][k].getActive();
+						if (j < CHUNK_SIZE - 1)
+							jPositive = m_blocks[i][j + 1][k].getActive();
+
+						bool kNegative = false;
+						if (k > 0)
+							kNegative = m_blocks[i][j][k - 1].getActive();
+
+						bool kPositive = false;
+						if (k < CHUNK_SIZE - 1)
+							kPositive = m_blocks[i][j][k + 1].getActive();
+						if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
+						{
+							shouldDraw = false;
+						}
 					}
 					if (!jPositive)
 					{

@@ -60,12 +60,22 @@ public:
 
 		vertecies[0].setPosition(glm::vec3(position.x, position.y, position.z));
 		vertecies[1].setPosition(glm::vec3(position.x + scale.x, position.y, position.z));
+		vertecies[2].setPosition(glm::vec3(position.x, position.y , position.z + scale.z));
+		vertecies[3].setPosition(glm::vec3(position.x + scale.x, position.y , position.z + scale.z));
+		vertecies[4].setPosition(glm::vec3(position.x, position.y + scale.y, position.z));
+		vertecies[5].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z));
+		vertecies[6].setPosition(glm::vec3(position.x, position.y + scale.y, position.z + scale.z));
+		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));
+		 
+		// this is the old way of setting vertecies (Z direction up). now the Y direction is up, so we chagned it.
+		/*vertecies[0].setPosition(glm::vec3(position.x, position.y, position.z));
+		vertecies[1].setPosition(glm::vec3(position.x + scale.x, position.y, position.z));
 		vertecies[2].setPosition(glm::vec3(position.x, position.y + scale.y, position.z));
 		vertecies[3].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z));
 		vertecies[4].setPosition(glm::vec3(position.x, position.y, position.z + scale.z));
 		vertecies[5].setPosition(glm::vec3(position.x + scale.x, position.y, position.z + scale.z));
 		vertecies[6].setPosition(glm::vec3(position.x, position.y + scale.y, position.z + scale.z));
-		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));
+		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));*/ 
 		// calculate the vertexes normal
 		glm::vec3 normalVecs[NUMBER_OF_NORMALS_IN_A_CUBE];
 		normalVecs[0] = glm::normalize(glm::cross(vertecies[1].positionToGlm() - vertecies[0].positionToGlm(), vertecies[2].positionToGlm() - vertecies[0].positionToGlm()));
@@ -149,12 +159,22 @@ public:
 		}
 		vertecies[0].setPosition(glm::vec3(position.x, position.y, position.z));
 		vertecies[1].setPosition(glm::vec3(position.x + scale.x, position.y, position.z));
+		vertecies[2].setPosition(glm::vec3(position.x, position.y, position.z + scale.z));
+		vertecies[3].setPosition(glm::vec3(position.x + scale.x, position.y, position.z + scale.z));
+		vertecies[4].setPosition(glm::vec3(position.x, position.y + scale.y, position.z));
+		vertecies[5].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z));
+		vertecies[6].setPosition(glm::vec3(position.x, position.y + scale.y, position.z + scale.z));
+		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));
+		/*
+
+		vertecies[0].setPosition(glm::vec3(position.x, position.y, position.z));
+		vertecies[1].setPosition(glm::vec3(position.x + scale.x, position.y, position.z));
 		vertecies[2].setPosition(glm::vec3(position.x, position.y + scale.y, position.z));
 		vertecies[3].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z));
 		vertecies[4].setPosition(glm::vec3(position.x, position.y, position.z + scale.z));
 		vertecies[5].setPosition(glm::vec3(position.x + scale.x, position.y, position.z + scale.z));
 		vertecies[6].setPosition(glm::vec3(position.x, position.y + scale.y, position.z + scale.z));
-		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));
+		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));*/
 
 		glm::vec3 normalVecs[NUMBER_OF_NORMALS_IN_A_CUBE];
 		normalVecs[0] = glm::normalize(glm::cross(vertecies[1].positionToGlm() - vertecies[0].positionToGlm(), vertecies[2].positionToGlm() - vertecies[0].positionToGlm()));

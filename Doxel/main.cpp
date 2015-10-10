@@ -44,7 +44,7 @@ int main()
 	InputManager m_inputManager;
 	m_inputManager.init(m_window.getGlfwWindow());
 
-	glm::vec3 cPos = glm::vec3(-5,3,5);
+	glm::vec3 cPos = glm::vec3(0,2,-5);
 	Camera3D m_camera;
 	m_camera.init(cPos, 45.0f,m_window.getAspectRatio(),1.0, 10000);
 	
@@ -280,7 +280,7 @@ int main()
 			}
 		}
 	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH * 1.1, sinf(time / 2) * CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH*1.1, CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH / 2);
-		glm::vec3 lightPos(50,50,50);
+		glm::vec3 lightPos(4,4,10);
 		m_light.setPosition(lightPos);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
