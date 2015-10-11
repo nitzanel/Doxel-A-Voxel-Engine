@@ -5,10 +5,10 @@
 #include "Vertex.h"
 
 #define CHUNK_SIZE  8
-#define NUM_CHUNKS 1
+#define NUM_CHUNKS 100
 #define BLOCK_WIDTH 1
 #define EPSILON 0.001
-#define RENDER_DISTANCE 200.0f
+#define RENDER_DISTANCE 100.0f
 
 
 
@@ -22,10 +22,10 @@ struct Row
 {
 	Row()
 	{};
-	Row(byte Start, byte End,bool Grass,bool shouldDraw)
+	Row(byte Start, byte End,Color8 Color,bool shouldDraw)
 	{
 		shouldbeDrawn = shouldDraw;
-		grass = Grass;
+		color = Color;
 		start = Start;
 		end = End;
 		length = end - start + 1;
@@ -37,7 +37,8 @@ struct Row
 	byte start;
 	byte end;
 	byte length;
-	bool grass;
+	Color8 color;
+	//bool grass;
 	bool shouldbeDrawn;
 	
 };
@@ -153,6 +154,15 @@ public:
 	*/
 	void draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos);
 	/*
+	Draw the chunk.
+	Input:
+	- DrawBatch* drawBatch - a pointer to the DrawBatch object being used to draw the scene.
+	- glm::vec2 &ChunkPos- a reference to a glm::vec2 that contains the position of the chunk on the 2D grid of the chunks.
+	- BlockClicked currentBlock - the current CHOSEN BLOCK!.
+	*/
+	void draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos, BlockClicked &currentBlock);
+
+	/*
 	Update the chunks.
 	Will set only happen if shouldUpdate = true.
 	will generate the blocks according to the m_genMethod.
@@ -197,6 +207,8 @@ private:
 	Color8 m_color;
 	GEN_METHOD m_genMethod = GEN_METHOD::ALL;
 	bool wasInit = false;
+	std::vector<Row> rows;
+
 };
 
 class ChunkManager
@@ -244,9 +256,12 @@ public:
 	-BlockClicked blockClicked - a BlockClicked struct with all the information needed.
 	-bool state- the new state of the block.
 	*/
-	void setBlock(BlockClicked blockClicked,bool state)
+	void setBlock(BlockClicked blockClicked, bool state)
 	{
-		setBlock(blockClicked.chunkX, blockClicked.chunkZ, blockClicked.blockX, blockClicked.blockY, blockClicked.blockZ, state);
+		if (m_chunks[blockClicked.chunkX][blockClicked.chunkZ].isInit)
+		{
+			setBlock(blockClicked.chunkX, blockClicked.chunkZ, blockClicked.blockX, blockClicked.blockY, blockClicked.blockZ, state);
+		}
 	}
 	
 	/*
@@ -256,6 +271,14 @@ public:
 	{
 		m_chunks[chunkX][chunkZ].setBlock(blockX, blockY, blockZ, state);
 	}
+	/*
+	Set the current clicked cube.
+	*/
+	void setCurrentClicked(BlockClicked currentClicked)
+	{
+		m_currentClicked = currentClicked;
+	}
+
 	/*
 	returns if a block is active, takes a BlockClicked struct.
 	*/
@@ -281,5 +304,7 @@ private:
 	glm::vec3 lastCameraPos;
 	Chunk** m_chunks;
 	int m_chunksDraw = 0;
+	BlockClicked m_currentClicked;
+	
 };
 

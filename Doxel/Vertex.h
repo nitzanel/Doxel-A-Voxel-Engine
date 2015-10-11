@@ -54,6 +54,12 @@ struct Color8
 	GLubyte g;
 	GLubyte b;
 	GLubyte a;
+
+	/*
+	returns true if the colors are equal. false if not.
+	*/
+	bool isEquals(Color8 right) { if (r == right.r && (g == right.g) && (b == right.b)){ return true; } return false; }
+
 };
 /*
 The Vertex struct.
