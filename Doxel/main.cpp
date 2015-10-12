@@ -307,12 +307,10 @@ int main()
 		//	m_drawBatch.draw(glm::vec3(m_clickedBlocks.back().chunkX * CHUNK_SIZE + m_clickedBlocks.back().blockX, m_clickedBlocks.back().blockY, m_clickedBlocks.back().chunkZ * CHUNK_SIZE + m_clickedBlocks.back().blockZ), glm::vec3(BLOCK_WIDTH), Color8(255, 255, 255, 255));
 			if (intersected)
 			{
-				Debug_Log("Draw true");
 				m_chunkManager.setCurrentClicked(m_clickedBlocks.back());
 			}
 			else
 			{
-				Debug_Log("Draw False");
 				m_chunkManager.setCurrentClicked(m_falseBlock);
 			}
 		}
