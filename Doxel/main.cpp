@@ -1,6 +1,7 @@
 // includes files
 #include <gl\glew.h> ///< always include glew before glfw
 #include "Window.h"  ///< include after glew, never before. that include glfw too
+#include "Doxel.h"
 #include "EasyErrors.h"
 #include "InputManager.h"
 #include "GLProgram.h"
@@ -22,7 +23,7 @@ int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();
 
-	const int width = 1600;
+	const int width = 1920;
 	const int height = 1200;
 
 	if (!glfwInit())
@@ -73,7 +74,7 @@ int main()
 	m_chunkManager.init();
 
 	Light m_light;
-	m_light.init(glm::vec3(0, 0, 100), Color3f(1.0,0,0), 1, &m_glProgram);
+	m_light.init(glm::vec3(0, 0, 0), Color3f(1.0,0.0,0.0), 1, &m_glProgram);
 
 	m_fpsCounter.start();
 
@@ -292,7 +293,7 @@ int main()
 	//	}
 	//	glm::vec3 lightPos = glm::vec3(cosf(time / 2)* CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH * 1.1, sinf(time / 2) * CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH*1.1, CHUNK_SIZE * NUM_CHUNKS * BLOCK_WIDTH / 2);
 		glm::vec3 lightPos(BLOCK_WIDTH*CHUNK_SIZE*NUM_CHUNKS / 4, 20, BLOCK_WIDTH*CHUNK_SIZE*NUM_CHUNKS /4);
-		m_light.setPosition(lightPos);
+		//m_light.setPosition(lightPos);
 		m_glProgram.uploadUniformMatrix("mvp", 1, mvp, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("m", 1, model, GL_FALSE);
 		m_glProgram.uploadUniformMatrix("v", 1, view, GL_FALSE);
@@ -320,7 +321,7 @@ int main()
 		}
 		m_chunkManager.draw(&m_drawBatch);
 		m_drawBatch.draw(glm::vec3(0, -0.1, 0), glm::vec3((CHUNK_SIZE + 1) * (NUM_CHUNKS), EPSILON * 100, (CHUNK_SIZE + 1) * (NUM_CHUNKS)), Color8(250, 214, 165, 255), true);
-		m_drawBatch.draw(m_light.getPosition(), glm::vec3(10, 10, 10), Color8(255, 252, 127, 255));
+		//m_drawBatch.draw(m_light.getPosition(), glm::vec3(10, 10, 10), Color8(255, 252, 127, 255));
 		m_drawBatch.end();
 		m_drawBatch.renderBatch();
 

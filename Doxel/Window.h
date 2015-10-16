@@ -1,7 +1,6 @@
 #pragma once
 #include <GLFW\glfw3.h>
-
-#define DEFAULT_TITLE "Doxel Engine"
+#include "Doxel.h"
 
 class Window
 {

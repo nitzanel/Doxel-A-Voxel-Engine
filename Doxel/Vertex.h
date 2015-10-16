@@ -2,8 +2,7 @@
 
 #include <GL\glew.h>
 #include <glm\glm.hpp>
-
-typedef unsigned char byte;
+#include "Doxel.h"
 
 /*
 The Position struct.

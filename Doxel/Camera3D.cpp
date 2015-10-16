@@ -86,7 +86,7 @@ bool Camera3D::inFrame(glm::vec3 position)
 	// and modified by Nitzan Elbaz to work with glm.
 	for (int p = 0; p < 6; p++)
 	{
-		if (frustum[p][0] * position.x + frustum[p][1] * position.y + frustum[p][2] * position.z + frustum[p][3] <= -8)
+		if (frustum[p][0] * position.x + frustum[p][1] * position.y + frustum[p][2] * position.z + frustum[p][3] <= -BLOCK_WIDTH*CHUNK_SIZE)
 			return false;
 	}
 	return true;

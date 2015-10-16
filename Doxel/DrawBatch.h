@@ -9,6 +9,7 @@ This file contains the Glyph class, RenderBatch class and DrawBatch class.
 #include <glm\glm.hpp>
 #include "Vertex.h"
 #include "Camera3D.h"
+#include "Doxel.h"
 
 /*
 The number of vertecies in a glyph object.

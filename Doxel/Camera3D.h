@@ -3,8 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm\gtx\rotate_vector.hpp>
-
-const float PI = 3.141592f;
+#include "Doxel.h"
 /*
 defines camera movement and rotation
 */

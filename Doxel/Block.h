@@ -3,13 +3,7 @@
 #include "DrawBatch.h"
 #include <random>
 #include "Vertex.h"
-
-#define CHUNK_SIZE  8
-#define NUM_CHUNKS 100
-#define BLOCK_WIDTH 1
-#define EPSILON 0.001
-#define RENDER_DISTANCE 100.0f
-
+#include "Doxel.h"
 
 
 enum GEN_METHOD
