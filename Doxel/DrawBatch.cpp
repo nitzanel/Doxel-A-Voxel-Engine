@@ -28,7 +28,6 @@ void DrawBatch::start()
 }
 void DrawBatch::end()
 {
-	createRenderBatches();
 }
 void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color[NUMBER_OF_VERTS_IN_GLYPH], bool overrideFrustum/* = false*/)
 {
@@ -38,25 +37,10 @@ void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 c
 	}
 	else
 	{
-	/*	if (lastBatchChecked)
-		{
-			if(lastBatchInFrustum)m_glyphs.emplace_back(position, scale, color);
-			lastBatchChecked = false;
-			return;
-		}*/
-
 		if (m_camera->inFrame(position))
 		{
-			m_glyphs.emplace_back(position, scale, color);
-		//	if(lastBatchChecked =false)lastBatchChecked = true;
-		//	lastBatchInFrustum = true;
-	/*	}
-		else
-		{
-	//		if (lastBatchChecked = false)lastBatchChecked = true;
-	//		lastBatchInFrustum = false;*/
+		m_glyphs.emplace_back(position, scale, color);
 		}
-
 	}
 }
 void DrawBatch::draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 &color, bool overrideFrustum/* = false*/)

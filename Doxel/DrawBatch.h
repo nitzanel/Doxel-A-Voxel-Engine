@@ -11,18 +11,6 @@ This file contains the Glyph class, RenderBatch class and DrawBatch class.
 #include "Camera3D.h"
 #include "Doxel.h"
 
-/*
-The number of vertecies in a glyph object.
-*/
-#define NUMBER_OF_VERTS_IN_GLYPH 8
-/*
-the number of indecies there are in a cube.
-*/
-#define NUMBER_OF_INDECIES_IN_A_CUBE 36
-/*
-the number of normal vectors in a cube. one for each face.
-*/
-#define NUMBER_OF_NORMALS_IN_A_CUBE 6
 
 /*
 The Glyph class, a basic wraper for Vertex class usage.
@@ -248,7 +236,7 @@ public:
 	/*
 	Initialize the DrawBatch object.
 	Input: 
-		-Camera3D* camera - a pointer to the main camera being used in the game. for frustum calculations.
+		-Camera3D* camera - a pointer to the main camera being used in the game. for frustum culling.
 	*/
 	void init(Camera3D *camera);
 	/*
