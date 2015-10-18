@@ -77,10 +77,12 @@
   <ItemGroup>
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera3D.h" />
+    <ClInclude Include="DebugRenderer.h" />
     <ClInclude Include="Doxel.h" />
     <ClInclude Include="DrawBatch.h" />
     <ClInclude Include="EasyErrors.h" />
     <ClInclude Include="FpsCounter.h" />
+    <ClInclude Include="GameRenderer.h" />
     <ClInclude Include="GLProgram.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="IOManager.h" />
@@ -95,8 +97,10 @@
   <ItemGroup>
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera3D.cpp" />
+    <ClCompile Include="DebugRenderer.cpp" />
     <ClCompile Include="DrawBatch.cpp" />
     <ClCompile Include="FpsCounter.cpp" />
+    <ClCompile Include="GameRenderer.cpp" />
     <ClCompile Include="GLProgram.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="IOManager.cpp" />

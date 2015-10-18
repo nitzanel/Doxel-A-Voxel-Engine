@@ -18,7 +18,7 @@
 #include "Block.h"
 #include "Light.h"
 #include "OBBRayPicking.h"
-
+#include "GameRenderer.h"
 int main()
 {
 	auto t_start = std::chrono::high_resolution_clock::now();

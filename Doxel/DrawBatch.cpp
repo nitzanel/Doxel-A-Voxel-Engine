@@ -14,6 +14,7 @@ DrawBatch::~DrawBatch()
 
 void DrawBatch::init(Camera3D *camera)
 {
+
 	createVertexArray();
 
 	m_camera = camera;

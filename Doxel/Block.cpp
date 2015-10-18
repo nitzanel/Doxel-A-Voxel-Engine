@@ -315,6 +315,197 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos, BlockClicked &curren
 	}
 }
 
+void Chunk::draw(Renderer* renderer, glm::vec2 &ChunkPos)
+{
+	Color8 colors[] {Color8(102, 51, 0, 255), Color8(124, 252, 0, 255) };
+
+
+	for (int i = 0; i < CHUNK_SIZE; i++)
+	{
+		for (int j = 0; j < CHUNK_SIZE; j++)
+		{
+
+			for (int k = 0; k < CHUNK_SIZE; k++)
+			{
+				bool shouldDraw = true;
+				Color8 blockColor = colors[0];
+				//	bool isGrass = false;
+
+				if (!m_blocks[i][j][k].getActive())
+				{
+					shouldDraw = false;
+				}
+				bool jPositive = false;
+				if (shouldDraw)
+				{
+					bool iNegative = false;
+					if (i > 0)
+						iNegative = m_blocks[i - 1][j][k].getActive();
+
+					bool iPositive = false;
+					if (i < CHUNK_SIZE - 1)
+						iPositive = m_blocks[i + 1][j][k].getActive();
+					bool jNegative = false;
+					if (j > 0)
+						jNegative = m_blocks[i][j - 1][k].getActive();
+					if (j < CHUNK_SIZE - 1)
+						jPositive = m_blocks[i][j + 1][k].getActive();
+
+					bool kNegative = false;
+					if (k > 0)
+						kNegative = m_blocks[i][j][k - 1].getActive();
+
+					bool kPositive = false;
+					if (k < CHUNK_SIZE - 1)
+						kPositive = m_blocks[i][j][k + 1].getActive();
+					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
+					{
+						shouldDraw = false;
+					}
+
+					if (!jPositive)
+					{
+						blockColor = colors[1];
+
+					}
+
+				}
+				if (rows.empty())
+				{
+					rows.emplace_back(k, k, blockColor, shouldDraw);
+				}
+				else
+				{
+
+					if ((!rows.back().color.isEquals(blockColor)) || (rows.back().shouldbeDrawn != shouldDraw))
+					{
+						rows.emplace_back(k, k, blockColor, shouldDraw);
+					}
+					else
+					{
+						rows.back().end = k;
+					}
+				}
+
+
+
+
+
+			}
+			for (int index = 0; index < rows.size(); index++)
+			{
+				rows[index].Update();
+				//Debug_Log("position of the row is" << i << "," << j << "," << (int)rows[index].start << "," << (int)rows[index].end<<"  should be drawn "<<rows[index].shouldbeDrawn);
+				if (rows[index].shouldbeDrawn)
+				{
+					glm::vec3 rowStart(ChunkPos.x + i, j, ChunkPos.y + rows[index].start);
+					glm::vec3 scale(BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH*rows[index].length);
+					renderer->draw(rowStart, scale, rows[index].color);
+				}
+
+			}
+			rows.clear();
+		}
+	}
+}
+void Chunk::draw(Renderer* renderer, glm::vec2 &ChunkPos, BlockClicked &currentBlock)
+{
+	Color8 colors[] {Color8(102, 51, 0, 255), Color8(124, 252, 0, 255), Color8(255, 255, 255, 255) };
+
+
+	for (int i = 0; i < CHUNK_SIZE; i++)
+	{
+		for (int j = 0; j < CHUNK_SIZE; j++)
+		{
+
+			for (int k = 0; k < CHUNK_SIZE; k++)
+			{
+				bool shouldDraw = true;
+				Color8 blockColor = colors[0];
+				//	bool isGrass = false;
+
+				if (!m_blocks[i][j][k].getActive())
+				{
+					shouldDraw = false;
+				}
+				bool jPositive = false;
+				if (shouldDraw)
+				{
+					bool iNegative = false;
+					if (i > 0)
+						iNegative = m_blocks[i - 1][j][k].getActive();
+
+					bool iPositive = false;
+					if (i < CHUNK_SIZE - 1)
+						iPositive = m_blocks[i + 1][j][k].getActive();
+					bool jNegative = false;
+					if (j > 0)
+						jNegative = m_blocks[i][j - 1][k].getActive();
+					if (j < CHUNK_SIZE - 1)
+						jPositive = m_blocks[i][j + 1][k].getActive();
+
+					bool kNegative = false;
+					if (k > 0)
+						kNegative = m_blocks[i][j][k - 1].getActive();
+
+					bool kPositive = false;
+					if (k < CHUNK_SIZE - 1)
+						kPositive = m_blocks[i][j][k + 1].getActive();
+					if (iNegative && iPositive && jNegative &&jPositive && kNegative && kPositive)
+					{
+						shouldDraw = false;
+					}
+
+					if (!jPositive)
+					{
+						blockColor = colors[1];
+
+					}
+					if ((currentBlock.blockX == i) && (currentBlock.blockY == j) && (currentBlock.blockZ == k))
+					{
+						blockColor = colors[2];
+					}
+
+				}
+				if (rows.empty())
+				{
+					rows.emplace_back(k, k, blockColor, shouldDraw);
+				}
+				else
+				{
+
+					if ((!rows.back().color.isEquals(blockColor)) || (rows.back().shouldbeDrawn != shouldDraw))
+					{
+						rows.emplace_back(k, k, blockColor, shouldDraw);
+					}
+					else
+					{
+						rows.back().end = k;
+					}
+				}
+
+
+
+
+
+			}
+			for (int index = 0; index < rows.size(); index++)
+			{
+				rows[index].Update();
+				//Debug_Log("position of the row is" << i << "," << j << "," << (int)rows[index].start << "," << (int)rows[index].end<<"  should be drawn "<<rows[index].shouldbeDrawn);
+				if (rows[index].shouldbeDrawn)
+				{
+					glm::vec3 rowStart(ChunkPos.x + i, j, ChunkPos.y + rows[index].start);
+					glm::vec3 scale(BLOCK_WIDTH, BLOCK_WIDTH, BLOCK_WIDTH*rows[index].length);
+					renderer->draw(rowStart, scale, rows[index].color);
+				}
+
+			}
+			rows.clear();
+		}
+	}
+}
+
 void Chunk::genRand(int numBlocks)
 {
 	int numActive = 0;
@@ -462,6 +653,31 @@ void ChunkManager::draw(DrawBatch* drawBatch)
 					else
 					{
 						m_chunks[i][j].draw(drawBatch, glm::vec2(i * CHUNK_SIZE, j * CHUNK_SIZE));
+					}
+					m_chunksDraw++;
+				}
+			}
+		}
+	}
+}
+
+void ChunkManager::draw(Renderer* renderer)
+{
+	for (int i = 0; i < NUM_CHUNKS; i++)
+	{
+		for (int j = 0; j < NUM_CHUNKS; j++)
+		{
+			if (m_chunks[i][j].isActive)
+			{
+				if (m_chunks[i][j].isInit)
+				{
+					if (m_currentClicked.chunkX == i && m_currentClicked.chunkZ == j)
+					{
+						m_chunks[i][j].draw(renderer, glm::vec2(i * CHUNK_SIZE, j * CHUNK_SIZE), m_currentClicked);
+					}
+					else
+					{
+						m_chunks[i][j].draw(renderer, glm::vec2(i * CHUNK_SIZE, j * CHUNK_SIZE));
 					}
 					m_chunksDraw++;
 				}

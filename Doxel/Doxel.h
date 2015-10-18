@@ -1,4 +1,5 @@
 #pragma once
+#include "EasyErrors.h"
 
 #define BLOCK_WIDTH 1
 #define CHUNK_SIZE  64
@@ -13,7 +14,14 @@
 
 #define NUM_OF_VERTECIES_IN_AN_ARC 8
 #define NUM_OF_VERTECIES_IN_A_DOUBLE_COLOR_ARC 12
+#define NUM_OF_INDECIES_IN_AN_ARC 36
 #define NUM_OF_NORMALS_IN_AN_ARC 6
+#define NUM_OF_LINES_IN_AN_ARC 12
+#define NUM_OF_VERTECIES_IN_LINED_ARC 24
+/*
+The offset when sending indecies to the buffer 
+*/
+#define TWO_COLOR_ARC_VERTECIES_OFFSET_OF_ONE_COLOR_ARC 4
 /*
 The number of vertecies in a glyph object.
 */
@@ -29,3 +37,4 @@ the number of normal vectors in a cube. one for each face.
 
 
 typedef unsigned char byte;
+typedef unsigned int uint;

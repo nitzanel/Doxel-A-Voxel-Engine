@@ -4,7 +4,8 @@
 #include <random>
 #include "Vertex.h"
 #include "Doxel.h"
-
+#include "GameRenderer.h"
+#include "DebugRenderer.h"
 
 enum GEN_METHOD
 {
@@ -155,7 +156,21 @@ public:
 	- BlockClicked currentBlock - the current CHOSEN BLOCK!.
 	*/
 	void draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos, BlockClicked &currentBlock);
-
+	/*
+	Draw the chunk.
+	Input:
+	-DrawBatch* drawBatch - a pointer to the DrawBatch object being used to draw the scene.
+	- glm::vec2 &ChunkPos- a reference to a glm::vec2 that contains the position of the chunk on the 2D grid of the chunks.
+	*/
+	void draw(Renderer* renderer, glm::vec2 &ChunkPos);
+	/*
+	Draw the chunk.
+	Input:
+	- DrawBatch* drawBatch - a pointer to the DrawBatch object being used to draw the scene.
+	- glm::vec2 &ChunkPos- a reference to a glm::vec2 that contains the position of the chunk on the 2D grid of the chunks.
+	- BlockClicked currentBlock - the current CHOSEN BLOCK!.
+	*/
+	void draw(Renderer* renderer, glm::vec2 &ChunkPos, BlockClicked &currentBlock);
 	/*
 	Update the chunks.
 	Will set only happen if shouldUpdate = true.
@@ -244,6 +259,13 @@ public:
 		- DrawBatch* drawBatch - a pointer to the DrawBatch object that will draw the chunks. 
 	*/
 	void draw(DrawBatch* drawBatch);
+	/*
+	This function will call the draw function in the needed chunks.
+	Input:
+	- DrawBatch* drawBatch - a pointer to the DrawBatch object that will draw the chunks.
+	*/
+	void draw(Renderer* renderer);
+
 	/*
 	Activate or deactivate a specific block in a specific chunk.
 	Input:

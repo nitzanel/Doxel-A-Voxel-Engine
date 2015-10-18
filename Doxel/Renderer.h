@@ -21,6 +21,7 @@ enum DRAW_TYPE
 
 class Polygon
 {
+public:
 	/*
 	The default empty costructor.
 	*/
@@ -111,6 +112,10 @@ class Polygon
 		vertecies[5].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z));
 		vertecies[6].setPosition(glm::vec3(position.x, position.y + scale.y, position.z + scale.z));
 		vertecies[7].setPosition(glm::vec3(position.x + scale.x, position.y + scale.y, position.z + scale.z));
+		vertecies[8].setPosition(glm::vec3(position.x, position.y, position.z));
+		vertecies[9].setPosition(glm::vec3(position.x + scale.x, position.y, position.z));
+		vertecies[10].setPosition(glm::vec3(position.x, position.y, position.z + scale.z));
+		vertecies[11].setPosition(glm::vec3(position.x + scale.x, position.y, position.z + scale.z));
 
 	}
 	/*
@@ -131,7 +136,7 @@ public:
 	Input: 
 		-Camera3D* camera - a pointer to the main camera being used in the game. for frustum culling.
 	*/
-	void init(Camera3D *camera);
+	void init(Camera3D *camera, DRAW_TYPE type);
 	
 	/*
 	Dispose the Renderer.
@@ -156,8 +161,11 @@ public:
 	/*
 	**** Draw calls to match Polygon class ****
 	*/
-	void draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color);
-	void draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color[2]);
+	/*
+	note that bool overrideFrustum will be normally false.
+	*/
+	void draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color, bool overrideFrustum = false);
+	void draw(const glm::vec3 &position, const glm::vec3 &scale, Color8 color[2], bool overrideFrustum = false);
 
 protected:
 	/*
@@ -182,7 +190,10 @@ protected:
 	std::vector<Polygon> m_polygons;
 //	std::vector<RenderBatch> m_renderBatches; turned off until actual implentaion
 	std::vector<GLuint> m_indecies;
+	std::vector<Vertex> m_vertecies;
 
+	unsigned int m_numVertecies = 0;
+	unsigned int m_numIndecies = 0;
 	GLuint m_numElements;
 	DRAW_TYPE m_drawType;
 };
