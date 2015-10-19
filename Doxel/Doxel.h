@@ -2,8 +2,8 @@
 #include "EasyErrors.h"
 
 #define BLOCK_WIDTH 1
-#define CHUNK_SIZE  64
-#define NUM_CHUNKS 4
+#define CHUNK_SIZE  8
+#define NUM_CHUNKS 1
 
 #define RENDER_DISTANCE 200.0f
 

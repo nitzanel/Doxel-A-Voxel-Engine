@@ -44,7 +44,7 @@ int main()
 	// Set up the Input Manager
 	InputManager m_inputManager;
 	m_inputManager.init(m_window.getGlfwWindow());
-
+	
 	glm::vec3 cPos = glm::vec3(0,2,-5);
 	Camera3D m_camera;
 	m_camera.init(cPos, 45.0f,m_window.getAspectRatio(),1.0, 10000);
@@ -55,6 +55,8 @@ int main()
 	DrawBatch m_drawBatch;
 	m_drawBatch.init(&m_camera);
 	
+	GameRenderer m_renderer;
+	m_renderer.init(&m_camera,DRAW_TYPE::TRIANGLES); 
 
 	// compile shaders, add attribes and all that
 	GLProgram m_glProgram;
@@ -302,7 +304,8 @@ int main()
 
 		m_chunkManager.update(m_camera.getPosition());
 
-		m_drawBatch.start();
+	//	m_drawBatch.start();
+		m_renderer.start();
 		if (!m_clickedBlocks.empty() )
 		{
 		//	m_drawBatch.draw(glm::vec3(m_clickedBlocks.back().chunkX * CHUNK_SIZE + m_clickedBlocks.back().blockX, m_clickedBlocks.back().blockY, m_clickedBlocks.back().chunkZ * CHUNK_SIZE + m_clickedBlocks.back().blockZ), glm::vec3(BLOCK_WIDTH), Color8(255, 255, 255, 255));
@@ -319,11 +322,15 @@ int main()
 		{
 			m_clickedBlocks.clear();
 		}
-		m_chunkManager.draw(&m_drawBatch);
-		m_drawBatch.draw(glm::vec3(0, -0.1, 0), glm::vec3((CHUNK_SIZE + 1) * (NUM_CHUNKS), EPSILON * 100, (CHUNK_SIZE + 1) * (NUM_CHUNKS)), Color8(250, 214, 165, 255), true);
+		//m_chunkManager.draw(&m_drawBatch);
+		m_chunkManager.draw(&m_renderer);
+	//	m_drawBatch.draw(glm::vec3(0, -0.1, 0), glm::vec3((CHUNK_SIZE + 1) * (NUM_CHUNKS), EPSILON * 100, (CHUNK_SIZE + 1) * (NUM_CHUNKS)), Color8(250, 214, 165, 255), true);
+		m_renderer.draw(glm::vec3(0, -0.1, 0), glm::vec3((CHUNK_SIZE + 1) * (NUM_CHUNKS), EPSILON * 100, (CHUNK_SIZE + 1) * (NUM_CHUNKS)), Color8(250, 214, 165, 255), true);
 		//m_drawBatch.draw(m_light.getPosition(), glm::vec3(10, 10, 10), Color8(255, 252, 127, 255));
-		m_drawBatch.end();
-		m_drawBatch.renderBatch();
+		m_renderer.end();
+		m_renderer.renderBatch();
+		//m_drawBatch.end();
+		//m_drawBatch.renderBatch();
 
 		// update the window
 		m_window.update();

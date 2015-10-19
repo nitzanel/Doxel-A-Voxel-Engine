@@ -318,6 +318,7 @@ void Chunk::draw(DrawBatch* drawBatch, glm::vec2 &ChunkPos, BlockClicked &curren
 void Chunk::draw(Renderer* renderer, glm::vec2 &ChunkPos)
 {
 	Color8 colors[] {Color8(102, 51, 0, 255), Color8(124, 252, 0, 255) };
+//	Debug_Log("Chunk is drawing");
 
 
 	for (int i = 0; i < CHUNK_SIZE; i++)
@@ -392,6 +393,7 @@ void Chunk::draw(Renderer* renderer, glm::vec2 &ChunkPos)
 
 
 			}
+
 			for (int index = 0; index < rows.size(); index++)
 			{
 				rows[index].Update();
@@ -412,6 +414,7 @@ void Chunk::draw(Renderer* renderer, glm::vec2 &ChunkPos, BlockClicked &currentB
 {
 	Color8 colors[] {Color8(102, 51, 0, 255), Color8(124, 252, 0, 255), Color8(255, 255, 255, 255) };
 
+	//Debug_Log("Chunk is drawing");
 
 	for (int i = 0; i < CHUNK_SIZE; i++)
 	{
